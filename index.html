@@ -20,6 +20,7 @@
 	<div class="row" style="text-align: center;">
 		<h1 id="chapter_selection"></h1>
 		<div><input id="pause_button" type="button" class="large button" value="Select Book &amp; Chapter" /></div>
+		<iframe id="youversion_iframe" src="" style="width: 100%; height: 640px;"></iframe>
 	</div>
 
   <script>
@@ -64,12 +65,12 @@
   <script>
 
 	var bible_chapters = [
-		{book: "Genesis", chapter: 50},
-		{book: "Exodus", chapter: 40},
-		{book: "Leviticus", chapter: 27},
-		{book: "Numbers", chapter: 36},
-		{book: "Deuteronomy", chapter: 34},
-		{book: "Joshua", chapter: 24},
+		{book: "Genesis", chapter: 50, abbr: "gen"},
+		{book: "Exodus", chapter: 40, abbr: "exo"},
+		{book: "Leviticus", chapter: 27, abbr: "lev"},
+		{book: "Numbers", chapter: 36, abbr: "num"},
+		{book: "Deuteronomy", chapter: 34, abbr: "deu"},
+		{book: "Joshua", chapter: 24, abbr: "jos"},
 		{book: "Judges", chapter: 21},
 		{book: "Ruth", chapter: 4},
 		{book: "1 Samuel", chapter: 31},
@@ -135,11 +136,19 @@
 	var pick_chapter = function() {
 		if(window.paused !== true) {
 			var book = Math.floor(Math.random() * 66);
-			var chapter = Math.floor(Math.random() * bible_chapters[book]["chapter"]);
+			var chapter = Math.ceil(Math.random() * bible_chapters[book]["chapter"]);
+
+			var book = bible_chapters[book]["book"];
+			if(book == "Judges") {
+				var abbr = "jdg";
+			} else {
+				var abbr = book.replace(" ", "").toLowerCase().slice(0, 3);
+			}
 
 			window.chapter = {
-				"book": bible_chapters[book]["book"],
-				"chapter": chapter
+				"book": book,
+				"chapter": chapter,
+				"abbr": abbr
 			};
 		}
 
@@ -157,13 +166,19 @@
 		jQuery(document).foundation();
 		setTimeout(pick_chapter, 0);
 		setTimeout(display_chapter, 0);
+		jQuery("#youversion_iframe").hide();
 	
 		jQuery("#pause_button").on("click", function() {
 			var new_state = window.paused === true ? false : true;
 
 			new_state === true ? jQuery("#pause_button").addClass("secondary") : jQuery("#pause_button").removeClass("secondary");
 
+			var iframe_src = new_state === true ? "https://www.youversion.com/bible/70/" + window.chapter.abbr + "." + window.chapter.chapter + ".gwt" : "";
+
 			window.paused = new_state;
+
+			jQuery("#youversion_iframe").attr("src", iframe_src);
+			jQuery("#youversion_iframe").toggle(1000);
 		});
 	});
   </script>
