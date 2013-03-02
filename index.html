@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<!--[if IE 8]> 				 <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+	<meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Foundation 4</title>
+
+  <link rel="stylesheet" href="css/normalize.css" />
+  
+  <link rel="stylesheet" href="css/foundation.css" />
+  
+
+  <script src="js/vendor/custom.modernizr.js"></script>
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+</head>
+<body>
+	<div class="row" style="text-align: center;">
+		<h1 id="chapter_selection"></h1>
+		<div><input id="pause_button" type="button" class="large button" value="Select Book &amp; Chapter" /></div>
+	</div>
+
+  <script>
+  document.write('<script src=' +
+  ('__proto__' in {} ? 'js/vendor/zepto' : 'js/vendor/jquery') +
+  '.js><\/script>')
+  </script>
+  
+  <script src="js/foundation.min.js"></script>
+  <!--
+  
+  <script src="js/foundation/foundation.js"></script>
+  
+  <script src="js/foundation/foundation.alerts.js"></script>
+  
+  <script src="js/foundation/foundation.clearing.js"></script>
+  
+  <script src="js/foundation/foundation.cookie.js"></script>
+  
+  <script src="js/foundation/foundation.dropdown.js"></script>
+  
+  <script src="js/foundation/foundation.forms.js"></script>
+  
+  <script src="js/foundation/foundation.joyride.js"></script>
+  
+  <script src="js/foundation/foundation.magellan.js"></script>
+  
+  <script src="js/foundation/foundation.orbit.js"></script>
+  
+  <script src="js/foundation/foundation.placeholder.js"></script>
+  
+  <script src="js/foundation/foundation.reveal.js"></script>
+  
+  <script src="js/foundation/foundation.section.js"></script>
+  
+  <script src="js/foundation/foundation.tooltips.js"></script>
+  
+  <script src="js/foundation/foundation.topbar.js"></script>
+  
+  -->
+  
+  <script>
+
+	var bible_chapters = [
+		{book: "Genesis", chapter: 50},
+		{book: "Exodus", chapter: 40},
+		{book: "Leviticus", chapter: 27},
+		{book: "Numbers", chapter: 36},
+		{book: "Deuteronomy", chapter: 34},
+		{book: "Joshua", chapter: 24},
+		{book: "Judges", chapter: 21},
+		{book: "Ruth", chapter: 4},
+		{book: "1 Samuel", chapter: 31},
+		{book: "2 Samuel", chapter: 24},
+		{book: "1 Kings", chapter: 22},
+		{book: "2 Kings", chapter: 25},
+		{book: "1 Chronicles", chapter: 29},
+		{book: "2 Chronicles", chapter: 36},
+		{book: "Ezra", chapter: 10},
+		{book: "Nehemiah", chapter: 13},
+		{book: "Esther", chapter: 10},
+		{book: "Job", chapter: 42},
+		{book: "Psalms", chapter: 150},
+		{book: "Proverbs", chapter: 31},
+		{book: "Ecclesiastes", chapter: 12},
+		{book: "Song of Songs", chapter: 8},
+		{book: "Isaiah", chapter: 66},
+		{book: "Jeremiah", chapter: 52},
+		{book: "Lamentations", chapter: 5},
+		{book: "Ezekiel", chapter: 48},
+		{book: "Daniel", chapter: 12},
+		{book: "Hosea", chapter: 14},
+		{book: "Joel", chapter: 3},
+		{book: "Amos", chapter: 9},
+		{book: "Obadiah", chapter: 1},
+		{book: "Jonah", chapter: 4},
+		{book: "Micah", chapter: 7},
+		{book: "Nahum", chapter: 3},
+		{book: "Habakkuk", chapter: 3},
+		{book: "Zephaniah", chapter: 3},
+		{book: "Haggai", chapter: 2},
+		{book: "Zechariah", chapter: 14},
+		{book: "Malachi", chapter: 4},
+		{book: "Matthew", chapter: 28},
+		{book: "Mark", chapter: 16},
+		{book: "Luke", chapter: 24},
+		{book: "John", chapter: 21},
+		{book: "Acts", chapter: 28},
+		{book: "Romans", chapter: 16},
+		{book: "1 Corinthians", chapter: 16},
+		{book: "2 Corinthians", chapter: 13},
+		{book: "Galatians", chapter: 6},
+		{book: "Ephesians", chapter: 6},
+		{book: "Philippians", chapter: 4},
+		{book: "Colossians", chapter: 4},
+		{book: "1 Thessalonians", chapter: 5},
+		{book: "2 Thessalonians", chapter: 3},
+		{book: "1 Timothy", chapter: 6},
+		{book: "2 Timothy", chapter: 4},
+		{book: "Titus", chapter: 3},
+		{book: "Philemon", chapter: 1},
+		{book: "Hebrews", chapter: 13},
+		{book: "James", chapter: 5},
+		{book: "1 Peter", chapter: 5},
+		{book: "2 Peter", chapter: 3},
+		{book: "1 John", chapter: 5},
+		{book: "2 John", chapter: 1},
+		{book: "3 John", chapter: 1},
+		{book: "Jude", chapter: 1},
+		{book: "Revelation", chapter: 22},
+	];
+
+	var pick_chapter = function() {
+		if(window.paused !== true) {
+			var book = Math.floor(Math.random() * 66);
+			var chapter = Math.floor(Math.random() * bible_chapters[book]["chapter"]);
+
+			window.chapter = {
+				"book": bible_chapters[book]["book"],
+				"chapter": chapter
+			};
+		}
+
+		setTimeout(pick_chapter, 0);
+	}
+
+	var display_chapter = function() {
+		if(window.chapter !== undefined) {
+			jQuery("#chapter_selection").html(window.chapter["book"] + " " + window.chapter["chapter"]);
+		}
+		setTimeout(display_chapter, 100);
+	}
+
+	jQuery(document).ready(function() {
+		jQuery(document).foundation();
+		setTimeout(pick_chapter, 0);
+		setTimeout(display_chapter, 0);
+	
+		jQuery("#pause_button").on("click", function() {
+			var new_state = window.paused === true ? false : true;
+
+			new_state === true ? jQuery("#pause_button").addClass("secondary") : jQuery("#pause_button").removeClass("secondary");
+
+			window.paused = new_state;
+		});
+	});
+  </script>
+</body>
+</html>
