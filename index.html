@@ -40,7 +40,7 @@
 		<h1 id="chapter_selection"></h1>
 		<div><input id="pause_button" type="button" class="large button" value="❚❚ Select Book &amp; Chapter" /></div>
 		<div id="spinner" style="height: 60px;"></div>
-		<iframe id="youversion_iframe" src="" style="width: 100%; height: 640px;"></iframe>
+		<iframe id="youversion_iframe" src="" frameborder="0" style="width: 100%; height: 640px;"></iframe>
 	</div>
 
 	<div id="about_modal" class="reveal-modal small">
@@ -239,7 +239,6 @@
 		jQuery(document).foundation();
 		setTimeout(pick_chapter, 0);
 		setTimeout(display_chapter, 0);
-		jQuery("#youversion_iframe").hide();
 		jQuery("#spinner").spin("large").hide();
 
 		jQuery("#youversion_iframe").load(function() {
@@ -268,7 +267,6 @@
 
 			jQuery("#pause_button").attr("value", btn_label);
 			jQuery("#youversion_iframe").attr("src", iframe_src);
-			jQuery("#youversion_iframe").toggle(1000);
 		});
 	});
   </script>
