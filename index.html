@@ -30,6 +30,7 @@
 			</ul>
 
 			<ul class="right">
+				<li><a href="mailto:spiffytech@spiffyte.ch">Contact me</a></li>
 				<li><a href="https://github.com/spiffytech/random_bibleizer">Source Code</a></li>
 			</ul>
 		</section>
@@ -38,6 +39,7 @@
 	<div class="row" style="text-align: center;">
 		<h1 id="chapter_selection"></h1>
 		<div><input id="pause_button" type="button" class="large button" value="❚❚ Select Book &amp; Chapter" /></div>
+		<div id="spinner" style="height: 60px;"></div>
 		<iframe id="youversion_iframe" src="" style="width: 100%; height: 640px;"></iframe>
 	</div>
 
@@ -87,7 +89,57 @@
   
   -->
   
+
+  <script src="js/vendor/spin.min.js"></script>
+
   <script>
+	/*
+	 
+	You can now create a spinner using any of the variants below:
+	 
+	$("#el").spin(); // Produces default Spinner using the text color of #el.
+	$("#el").spin("small"); // Produces a 'small' Spinner using the text color of #el.
+	$("#el").spin("large", "white"); // Produces a 'large' Spinner in white (or any valid CSS color).
+	$("#el").spin({ ... }); // Produces a Spinner using your custom settings.
+	 
+	$("#el").spin(false); // Kills the spinner.
+	 
+	*/
+	(function($) {
+		$.fn.spin = function(opts, color) {
+			var presets = {
+				"tiny": { lines: 8, length: 2, width: 2, radius: 3 },
+				"small": { lines: 8, length: 4, width: 3, radius: 5 },
+				"large": { lines: 10, length: 8, width: 4, radius: 8 }
+			};
+			if (Spinner) {
+				return this.each(function() {
+					var $this = $(this),
+						data = $this.data();
+					
+					if (data.spinner) {
+						data.spinner.stop();
+						delete data.spinner;
+					}
+					if (opts !== false) {
+						if (typeof opts === "string") {
+							if (opts in presets) {
+								opts = presets[opts];
+							} else {
+								opts = {};
+							}
+							if (color) {
+								opts.color = color;
+							}
+						}
+						data.spinner = new Spinner($.extend({color: $this.css('color')}, opts)).spin(this);
+					}
+				});
+			} else {
+				throw "Spinner class not available.";
+			}
+		};
+	})(jQuery);
 
 	var bible_chapters = [
 		{book: "Genesis", chapter: 50, abbr: "gen"},
@@ -188,6 +240,11 @@
 		setTimeout(pick_chapter, 0);
 		setTimeout(display_chapter, 0);
 		jQuery("#youversion_iframe").hide();
+		jQuery("#spinner").spin("large").hide();
+
+		jQuery("#youversion_iframe").load(function() {
+			jQuery("#spinner").hide(250);
+		});
 	
 		jQuery("#pause_button").on("click", function() {
 			var new_state = window.paused === true ? false : true;
@@ -195,13 +252,16 @@
 			var btn_label = jQuery("#pause_button").attr("value");
 
 			if(new_state === true) {
+
 				jQuery("#pause_button").addClass("secondary");
 				iframe_src = "https://www.youversion.com/bible/70/" + window.chapter.abbr + "." + window.chapter.chapter + ".gwt";
 				btn_label = btn_label.replace("❚❚", "▶");
+				jQuery("#spinner").show();
 			} else {
 				jQuery("#pause_button").removeClass("secondary");
 				iframe_src = "";
 				btn_label = btn_label.replace("▶", "❚❚");
+				jQuery("#spinner").hide();
 			}
 
 			window.paused = new_state;
