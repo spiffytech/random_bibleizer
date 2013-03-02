@@ -5,6 +5,7 @@
 <head>
 	<meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
+  <meta name="description" content="The Random Bibleizer lets you randomly choose a Bible book &amp; chapter to read today. Get more guidance from God than just reading chapters in a row." />
   <title>Foundation 4</title>
 
   <link rel="stylesheet" href="css/normalize.css" />
@@ -17,10 +18,32 @@
 
 </head>
 <body>
+	<nav class="top-bar">
+		<ul class="title-area">
+			<li class="name"><h1><a href="/">Random Bibleizer</a></h1></li>
+		</ul>
+
+		<section class="top-bar-section">
+			<ul class="left">
+				<li class="divider"></li>
+				<li><a href="#" data-reveal-id="about_modal">About</a></li>
+			</ul>
+
+			<ul class="right">
+				<li><a href="https://github.com/spiffytech/random_bibleizer">Source Code</a></li>
+			</ul>
+		</section>
+	</nav>
+
 	<div class="row" style="text-align: center;">
 		<h1 id="chapter_selection"></h1>
-		<div><input id="pause_button" type="button" class="large button" value="Select Book &amp; Chapter" /></div>
+		<div><input id="pause_button" type="button" class="large button" value="❚❚ Select Book &amp; Chapter" /></div>
 		<iframe id="youversion_iframe" src="" style="width: 100%; height: 640px;"></iframe>
+	</div>
+
+	<div id="about_modal" class="reveal-modal small">
+		<p>The Random Bibleizer randomly chooses a bible book &amp; chapter for you to read today. Why would you want this? Simple: it allows God to give you more guidance over what you're reading than following some reading plan. This page cycles through every single chapter in the bible about once every 5 seconds, so all you have to do is ask God to guide when you press the "select" button, to provide you with something useful.</p>
+		<a class="close-reveal-modal">&#215;</a>
 	</div>
 
   <script>
@@ -52,7 +75,9 @@
   
   <script src="js/foundation/foundation.placeholder.js"></script>
   
+  -->
   <script src="js/foundation/foundation.reveal.js"></script>
+  <!--
   
   <script src="js/foundation/foundation.section.js"></script>
   
@@ -71,79 +96,75 @@
 		{book: "Numbers", chapter: 36, abbr: "num"},
 		{book: "Deuteronomy", chapter: 34, abbr: "deu"},
 		{book: "Joshua", chapter: 24, abbr: "jos"},
-		{book: "Judges", chapter: 21},
-		{book: "Ruth", chapter: 4},
-		{book: "1 Samuel", chapter: 31},
-		{book: "2 Samuel", chapter: 24},
-		{book: "1 Kings", chapter: 22},
-		{book: "2 Kings", chapter: 25},
-		{book: "1 Chronicles", chapter: 29},
-		{book: "2 Chronicles", chapter: 36},
-		{book: "Ezra", chapter: 10},
-		{book: "Nehemiah", chapter: 13},
-		{book: "Esther", chapter: 10},
-		{book: "Job", chapter: 42},
-		{book: "Psalms", chapter: 150},
-		{book: "Proverbs", chapter: 31},
-		{book: "Ecclesiastes", chapter: 12},
-		{book: "Song of Songs", chapter: 8},
-		{book: "Isaiah", chapter: 66},
-		{book: "Jeremiah", chapter: 52},
-		{book: "Lamentations", chapter: 5},
-		{book: "Ezekiel", chapter: 48},
-		{book: "Daniel", chapter: 12},
-		{book: "Hosea", chapter: 14},
-		{book: "Joel", chapter: 3},
-		{book: "Amos", chapter: 9},
-		{book: "Obadiah", chapter: 1},
-		{book: "Jonah", chapter: 4},
-		{book: "Micah", chapter: 7},
-		{book: "Nahum", chapter: 3},
-		{book: "Habakkuk", chapter: 3},
-		{book: "Zephaniah", chapter: 3},
-		{book: "Haggai", chapter: 2},
-		{book: "Zechariah", chapter: 14},
-		{book: "Malachi", chapter: 4},
-		{book: "Matthew", chapter: 28},
-		{book: "Mark", chapter: 16},
-		{book: "Luke", chapter: 24},
-		{book: "John", chapter: 21},
-		{book: "Acts", chapter: 28},
-		{book: "Romans", chapter: 16},
-		{book: "1 Corinthians", chapter: 16},
-		{book: "2 Corinthians", chapter: 13},
-		{book: "Galatians", chapter: 6},
-		{book: "Ephesians", chapter: 6},
-		{book: "Philippians", chapter: 4},
-		{book: "Colossians", chapter: 4},
-		{book: "1 Thessalonians", chapter: 5},
-		{book: "2 Thessalonians", chapter: 3},
-		{book: "1 Timothy", chapter: 6},
-		{book: "2 Timothy", chapter: 4},
-		{book: "Titus", chapter: 3},
-		{book: "Philemon", chapter: 1},
-		{book: "Hebrews", chapter: 13},
-		{book: "James", chapter: 5},
-		{book: "1 Peter", chapter: 5},
-		{book: "2 Peter", chapter: 3},
-		{book: "1 John", chapter: 5},
-		{book: "2 John", chapter: 1},
-		{book: "3 John", chapter: 1},
-		{book: "Jude", chapter: 1},
-		{book: "Revelation", chapter: 22},
+		{book: "Judges", chapter: 21, abbr: "jdg"},
+		{book: "Ruth", chapter: 4, abbr: "rut"},
+		{book: "1 Samuel", chapter: 31, abbr: "1sa"},
+		{book: "2 Samuel", chapter: 24, abbr: "2sa"},
+		{book: "1 Kings", chapter: 22, abbr: "1ki"},
+		{book: "2 Kings", chapter: 25, abbr: "2ki"},
+		{book: "1 Chronicles", chapter: 29, abbr: "1ch"},
+		{book: "2 Chronicles", chapter: 36, abbr: "2ch"},
+		{book: "Ezra", chapter: 10, abbr: "ezr"},
+		{book: "Nehemiah", chapter: 13, abrr: "neh"},
+		{book: "Esther", chapter: 10, abbr: "est"},
+		{book: "Job", chapter: 42, abbr: "job"},
+		{book: "Psalms", chapter: 150, abbr: "psa"},
+		{book: "Proverbs", chapter: 31, abrr: "pro"},
+		{book: "Ecclesiastes", chapter: 12, abbr: "ecc"},
+		{book: "Song of Songs", chapter: 8, abbr: "sng"},
+		{book: "Isaiah", chapter: 66, abbr: "isa"},
+		{book: "Jeremiah", chapter: 52, abbr: "jer"},
+		{book: "Lamentations", chapter: 5, abbr: "lam"},
+		{book: "Ezekiel", chapter: 48, abbr: "ezk"},
+		{book: "Daniel", chapter: 12, abbr: "dan"},
+		{book: "Hosea", chapter: 14, abbr: "hos"},
+		{book: "Joel", chapter: 3, abbr: "jol"},
+		{book: "Amos", chapter: 9, abbr: "amo"},
+		{book: "Obadiah", chapter: 1, abbr: "oba"},
+		{book: "Jonah", chapter: 4, abbr: "jon"},
+		{book: "Micah", chapter: 7, abbr: "mic"},
+		{book: "Nahum", chapter: 3, abbr: "nam"},
+		{book: "Habakkuk", chapter: 3, abbr: "hab"},
+		{book: "Zephaniah", chapter: 3, abbr: "zep"},
+		{book: "Haggai", chapter: 2, abbr: "hag"},
+		{book: "Zechariah", chapter: 14, abbr: "zec"},
+		{book: "Malachi", chapter: 4, abbr: "mal"},
+		{book: "Matthew", chapter: 28, abbr: "mat"},
+		{book: "Mark", chapter: 16, abbr: "mrk"},
+		{book: "Luke", chapter: 24, abbr: "luk"},
+		{book: "John", chapter: 21, abbr: "jhn"},
+		{book: "Acts", chapter: 28, abbr: "act"},
+		{book: "Romans", chapter: 16, abbr: "rom"},
+		{book: "1 Corinthians", chapter: 16, abbr: "1co"},
+		{book: "2 Corinthians", chapter: 13, abbr: "2cor"},
+		{book: "Galatians", chapter: 6, abbr: "gal"},
+		{book: "Ephesians", chapter: 6, abbr: "eph"},
+		{book: "Philippians", chapter: 4, abbr: "php"},
+		{book: "Colossians", chapter: 4, abbr: "col"},
+		{book: "1 Thessalonians", chapter: 5, abbr: "1th"},
+		{book: "2 Thessalonians", chapter: 3, abbr: "2th"},
+		{book: "1 Timothy", chapter: 6, abbr: "1ti"},
+		{book: "2 Timothy", chapter: 4, abbr: "2ti"},
+		{book: "Titus", chapter: 3, abbr: "tit"},
+		{book: "Philemon", chapter: 1, abbr: "phm"},
+		{book: "Hebrews", chapter: 13, abbr: "heb"},
+		{book: "James", chapter: 5, abbr: "jas"},
+		{book: "1 Peter", chapter: 5, abbr: "1pe"},
+		{book: "2 Peter", chapter: 3, abbr: "2pe"},
+		{book: "1 John", chapter: 5, abbr: "1jn"},
+		{book: "2 John", chapter: 1, abbr: "2jn"},
+		{book: "3 John", chapter: 1, abbr: "3jn"},
+		{book: "Jude", chapter: 1, abbr: "jud"},
+		{book: "Revelation", chapter: 22, abbr: "rev"},
 	];
 
 	var pick_chapter = function() {
 		if(window.paused !== true) {
-			var book = Math.floor(Math.random() * 66);
-			var chapter = Math.ceil(Math.random() * bible_chapters[book]["chapter"]);
+			var book_index = Math.floor(Math.random() * 66);
+			var chapter = Math.ceil(Math.random() * bible_chapters[book_index]["chapter"]);
 
-			var book = bible_chapters[book]["book"];
-			if(book == "Judges") {
-				var abbr = "jdg";
-			} else {
-				var abbr = book.replace(" ", "").toLowerCase().slice(0, 3);
-			}
+			var book = bible_chapters[book_index]["book"];
+			var abbr = bible_chapters[book_index]["abbr"];
 
 			window.chapter = {
 				"book": book,
@@ -170,13 +191,22 @@
 	
 		jQuery("#pause_button").on("click", function() {
 			var new_state = window.paused === true ? false : true;
+			var iframe_src = null;
+			var btn_label = jQuery("#pause_button").attr("value");
 
-			new_state === true ? jQuery("#pause_button").addClass("secondary") : jQuery("#pause_button").removeClass("secondary");
-
-			var iframe_src = new_state === true ? "https://www.youversion.com/bible/70/" + window.chapter.abbr + "." + window.chapter.chapter + ".gwt" : "";
+			if(new_state === true) {
+				jQuery("#pause_button").addClass("secondary");
+				iframe_src = "https://www.youversion.com/bible/70/" + window.chapter.abbr + "." + window.chapter.chapter + ".gwt";
+				btn_label = btn_label.replace("❚❚", "▶");
+			} else {
+				jQuery("#pause_button").removeClass("secondary");
+				iframe_src = "";
+				btn_label = btn_label.replace("▶", "❚❚");
+			}
 
 			window.paused = new_state;
 
+			jQuery("#pause_button").attr("value", btn_label);
 			jQuery("#youversion_iframe").attr("src", iframe_src);
 			jQuery("#youversion_iframe").toggle(1000);
 		});
