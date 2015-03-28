@@ -1,0 +1,13 @@
+{
+  "name": "biblefixer",
+  "description": "Identifies words inappropriately joined together in YouVersion Bible texts, and suggests corrections",
+  "author": "spiffytech <spiffytech@spiffyte.ch>",
+  "dependencies": {
+    "request": "2.14.x",
+    "step": "0.0.5"
+  },
+  "devDependencies": {
+  },
+  "engine": "node >= 0.8.1",
+  "version": "2.0.0"
+}
