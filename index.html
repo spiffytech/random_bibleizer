@@ -14,7 +14,8 @@
   
 
   <script src="js/vendor/custom.modernizr.js"></script>
-  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <!--<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>-->
+  <script src="js/vendor/jquery-1.9.1.min.js"></script>
 
   <script src="https://cdn.logrocket.io/LogRocket.min.js" crossorigin="anonymous"></script>
   <script>window.LogRocket && window.LogRocket.init('g8v96u/random-bibleizer');</script>
@@ -33,7 +34,7 @@
 			</ul>
 
 			<ul class="right">
-				<li><a href="mailto:spiffytech@spiffyte.ch">Contact Me</a></li>
+				<li><a href="mailto:spiffy@spiffy.tech">Contact Me</a></li>
 				<li><a href="https://github.com/spiffytech/random_bibleizer">Source Code</a></li>
 			</ul>
 		</section>
@@ -51,11 +52,13 @@
 		<a class="close-reveal-modal">&#215;</a>
 	</div>
 
+    <!--
   <script>
   document.write('<script src=' +
   ('__proto__' in {} ? 'js/vendor/zepto' : 'js/vendor/jquery') +
   '.js><\/script>')
   </script>
+  -->
   
   <script src="js/foundation.min.js"></script>
   <!--
@@ -287,5 +290,15 @@
 	  })();
 
 	</script>
+
+    <script type="text/javascript">
+        var id = localStorage.getItem('logrocket_id');
+        if (!id) {
+            id = new Date().getTime();
+            localStorage.setItem('logrocket_id', id);
+        }
+
+        LogRocket.identify(id, {});
+    </script>
 </body>
 </html>
