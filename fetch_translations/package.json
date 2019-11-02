@@ -3,7 +3,7 @@
   "description": "Identifies words inappropriately joined together in YouVersion Bible texts, and suggests corrections",
   "author": "spiffytech <spiffytech@spiffyte.ch>",
   "dependencies": {
-    "request": "2.14.x",
+    "request": "2.88.x",
     "step": "0.0.5"
   },
   "devDependencies": {
