@@ -29,17 +29,29 @@
   <body>
     <div id="app">
       <v-app>
+        <v-navigation-drawer app v-model="showDrawer" class="d-sm-none" disable-resize-watcher>
+          <v-list-item>
+            <v-btn text href="mailto:hello@spiffy.tech">Contact Me</v-btn>
+          </v-list-item>
+          <v-list-item>
+            <v-btn text href="https://github.com/spiffytech/random_bibleizer"
+              >Source Code</v-btn
+            >
+          </v-list-item>
+        </v-navigation-drawer>
+
+        <v-app-bar app>
+          <v-app-bar-nav-icon @click.stop="showDrawer = !showDrawer" class="d-sm-none"></v-app-bar-nav-icon>
+          <v-toolbar-title>Random Bibleizer</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn text href="mailto:hello@spiffy.tech" class="d-none d-sm-flex">Contact Me</v-btn>
+          <v-btn text href="https://github.com/spiffytech/random_bibleizer" class="d-none d-sm-flex"
+            >Source Code</v-btn
+          >
+        </v-app-bar>
+
         <v-content>
           <v-container>
-            <v-toolbar>
-              <v-toolbar-title>Random Bibleizer</v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-btn text href="mailto:hello@spiffy.tech">Contact Me</v-btn>
-              <v-btn text href="https://github.com/spiffytech/random_bibleizer"
-                >Source Code</v-btn
-              >
-            </v-toolbar>
-
             <v-row justify="center" class="my-4">
               <div v-if="displayedChapter" class="display-1">
                 {{displayedChapter.book.human}} {{displayedChapter.chapter}}
@@ -47,7 +59,9 @@
             </v-row>
 
             <v-row justify="center" class="my-4">
-              <v-btn @click="paused = !paused" :color="paused ? null : 'primary'"
+              <v-btn
+                @click="paused = !paused"
+                :color="paused ? null : 'primary'"
                 >{{ paused ? "Randomize" : "Select book & chapter" }}</v-btn
               >
             </v-row>
@@ -87,13 +101,18 @@
       </v-app>
     </div>
 
-    <script src="https://browser.sentry-cdn.com/5.11.1/bundle.min.js" integrity="sha384-r7/ZcDRYpWjCNXLUKk3iuyyyEcDJ+o+3M5CqXP5GUGODYbolXewNHAZLYSJ3ZHcV" crossorigin="anonymous">
-</script>
+    <script
+      src="https://browser.sentry-cdn.com/5.11.1/bundle.min.js"
+      integrity="sha384-r7/ZcDRYpWjCNXLUKk3iuyyyEcDJ+o+3M5CqXP5GUGODYbolXewNHAZLYSJ3ZHcV"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script src="data.js"></script>
     <script>
-      Sentry.init({ dsn: 'https://c722dae329914eada81cc7407fa43d71@sentry.io/1955363' });
+      Sentry.init({
+        dsn: "https://c722dae329914eada81cc7407fa43d71@sentry.io/1955363"
+      });
 
       function chooseRandomBookAndChapterByBook() {
         var book_index = Math.floor(Math.random() * window.books.length);
@@ -119,7 +138,7 @@
         el: "#app",
         vuetify: new Vuetify(),
         data: {
-          showAbout: false,
+          showDrawer: false,
           selectedTranslation: localStorage.getItem("savedTranslation") || "GW",
           translations: window.translations.map(translation => ({
             text: translation.local_title,
