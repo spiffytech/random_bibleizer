@@ -1,304 +1,182 @@
 <!DOCTYPE html>
-<!--[if IE 8]> 				 <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<html>
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
+      rel="stylesheet"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
+    />
 
-<head>
-	<meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <meta name="description" content="The Random Bibleizer lets you randomly choose a Bible book &amp; chapter to read today. Get more guidance from God than just reading chapters in a row." />
-  <title>Random Bibleizer - Choose a Random Bible Book &amp; Chapter to Read</title>
+    <meta
+      name="description"
+      content="Select a random Bible chapter to read in any English translation. If you're not sure what to read today, start here!"
+    />
 
-  <link rel="stylesheet" href="css/normalize.css" />
-  
-  <link rel="stylesheet" href="css/foundation.css" />
-  
+    <title>Random Bibleizer - Choose a Random Bible Chapter to Read</title>
+  </head>
 
-  <script src="js/vendor/custom.modernizr.js"></script>
-  <!--<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>-->
-  <script src="js/vendor/jquery-1.9.1.min.js"></script>
+  <body>
+    <div id="app">
+      <v-app>
+        <v-content>
+          <v-container>
+            <v-toolbar>
+              <v-toolbar-title>Random Bibleizer</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-btn text href="mailto:hello@spiffy.tech">Contact Me</v-btn>
+              <v-btn text href="https://github.com/spiffytech/random_bibleizer"
+                >Source Code</v-btn
+              >
+            </v-toolbar>
 
-  <script src="https://cdn.logrocket.io/LogRocket.min.js" crossorigin="anonymous"></script>
-  <script>window.LogRocket && window.LogRocket.init('g8v96u/random-bibleizer');</script>
+            <v-row justify="center" class="my-4">
+              <div v-if="displayedChapter" class="display-1">
+                {{displayedChapter.book.human}} {{displayedChapter.chapter}}
+              </div>
+            </v-row>
 
-</head>
-<body>
-	<nav class="top-bar">
-		<ul class="title-area">
-			<li class="name"><h1><a href="/">Random Bibleizer</a></h1></li>
-		</ul>
+            <v-row justify="center" class="my-4">
+              <v-btn @click="paused = !paused" :color="paused ? null : 'primary'"
+                >{{ paused ? "Randomize" : "Select book & chapter" }}</v-btn
+              >
+            </v-row>
 
-		<section class="top-bar-section">
-			<ul class="left">
-				<li class="divider"></li>
-				<li><a href="#" data-reveal-id="about_modal">About</a></li>
-			</ul>
+            <v-row justify="center" class="my-4">
+              <v-col cols="12" md="6">
+                <v-radio-group v-model="weightBooksEvenly" :default="true">
+                  <v-radio label="Weight books evenly" :value="true"></v-radio>
+                  <v-radio
+                    label="Weight chapters evenly"
+                    :value="false"
+                  ></v-radio>
+                </v-radio-group>
+              </v-col>
 
-			<ul class="right">
-				<li><a href="mailto:spiffy@spiffy.tech">Contact Me</a></li>
-				<li><a href="https://github.com/spiffytech/random_bibleizer">Source Code</a></li>
-			</ul>
-		</section>
-	</nav>
+              <v-col cols="12" md="6">
+                <v-select
+                  :items="translations"
+                  label="Remember translation"
+                  v-model="selectedTranslation"
+                />
+              </v-col>
+            </v-row>
 
-	<div class="row" style="text-align: center;">
-		<h1 id="chapter_selection"></h1>
-		<div><input id="pause_button" type="button" class="large button" value="❚❚ Select Book &amp; Chapter" /></div>
-		<div id="spinner" style="height: 60px;"></div>
-		<iframe id="youversion_iframe" src="" frameborder="0" style="width: 100%; height: 10000px;"></iframe>
-	</div>
+            <hr />
 
-	<div id="about_modal" class="reveal-modal small">
-		<p>The Random Bibleizer randomly chooses a bible book &amp; chapter for you to read today. Perhaps God has something to show you today that wouldn't come up in a reading plan.</p>
-		<a class="close-reveal-modal">&#215;</a>
-	</div>
+            <v-row justify="center">
+              <iframe
+                v-if="paused"
+                :src="getIframeSrc()"
+                frameborder="0"
+                style="width: 100%; height: 10000px;"
+              ></iframe>
+            </v-row>
+          </v-container>
+        </v-content>
+      </v-app>
+    </div>
 
-    <!--
-  <script>
-  document.write('<script src=' +
-  ('__proto__' in {} ? 'js/vendor/zepto' : 'js/vendor/jquery') +
-  '.js><\/script>')
-  </script>
-  -->
-  
-  <script src="js/foundation.min.js"></script>
-  <!--
-  
-  <script src="js/foundation/foundation.js"></script>
-  
-  <script src="js/foundation/foundation.alerts.js"></script>
-  
-  <script src="js/foundation/foundation.clearing.js"></script>
-  
-  <script src="js/foundation/foundation.cookie.js"></script>
-  
-  <script src="js/foundation/foundation.dropdown.js"></script>
-  
-  <script src="js/foundation/foundation.forms.js"></script>
-  
-  <script src="js/foundation/foundation.joyride.js"></script>
-  
-  <script src="js/foundation/foundation.magellan.js"></script>
-  
-  <script src="js/foundation/foundation.orbit.js"></script>
-  
-  <script src="js/foundation/foundation.placeholder.js"></script>
-  
-  -->
-  <script src="js/foundation/foundation.reveal.js"></script>
-  <!--
-  
-  <script src="js/foundation/foundation.section.js"></script>
-  
-  <script src="js/foundation/foundation.tooltips.js"></script>
-  
-  <script src="js/foundation/foundation.topbar.js"></script>
-  
-  -->
-  
+    <script src="https://browser.sentry-cdn.com/5.11.1/bundle.min.js" integrity="sha384-r7/ZcDRYpWjCNXLUKk3iuyyyEcDJ+o+3M5CqXP5GUGODYbolXewNHAZLYSJ3ZHcV" crossorigin="anonymous">
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="data.js"></script>
+    <script>
+      Sentry.init({ dsn: 'https://c722dae329914eada81cc7407fa43d71@sentry.io/1955363' });
 
-  <script src="js/vendor/spin.min.js"></script>
+      function chooseRandomBookAndChapterByBook() {
+        var book_index = Math.floor(Math.random() * window.books.length);
+        var chapter = Math.ceil(
+          Math.random() * window.books[book_index]["chapters"]
+        );
 
-  <script>
-	/*
-	 
-	You can now create a spinner using any of the variants below:
-	 
-	$("#el").spin(); // Produces default Spinner using the text color of #el.
-	$("#el").spin("small"); // Produces a 'small' Spinner using the text color of #el.
-	$("#el").spin("large", "white"); // Produces a 'large' Spinner in white (or any valid CSS color).
-	$("#el").spin({ ... }); // Produces a Spinner using your custom settings.
-	 
-	$("#el").spin(false); // Kills the spinner.
-	 
-	*/
-	(function($) {
-		$.fn.spin = function(opts, color) {
-			var presets = {
-				"tiny": { lines: 8, length: 2, width: 2, radius: 3 },
-				"small": { lines: 8, length: 4, width: 3, radius: 5 },
-				"large": { lines: 10, length: 8, width: 4, radius: 8 }
-			};
-			if (Spinner) {
-				return this.each(function() {
-					var $this = $(this),
-						data = $this.data();
-					
-					if (data.spinner) {
-						data.spinner.stop();
-						delete data.spinner;
-					}
-					if (opts !== false) {
-						if (typeof opts === "string") {
-							if (opts in presets) {
-								opts = presets[opts];
-							} else {
-								opts = {};
-							}
-							if (color) {
-								opts.color = color;
-							}
-						}
-						data.spinner = new Spinner($.extend({color: $this.css('color')}, opts)).spin(this);
-					}
-				});
-			} else {
-				throw "Spinner class not available.";
-			}
-		};
-	})(jQuery);
+        return { book: window.books[book_index], chapter };
+      }
 
-	var bible_chapters = [
-		{book: "Genesis", chapter: 50, abbr: "gen"},
-		{book: "Exodus", chapter: 40, abbr: "exo"},
-		{book: "Leviticus", chapter: 27, abbr: "lev"},
-		{book: "Numbers", chapter: 36, abbr: "num"},
-		{book: "Deuteronomy", chapter: 34, abbr: "deu"},
-		{book: "Joshua", chapter: 24, abbr: "jos"},
-		{book: "Judges", chapter: 21, abbr: "jdg"},
-		{book: "Ruth", chapter: 4, abbr: "rut"},
-		{book: "1 Samuel", chapter: 31, abbr: "1sa"},
-		{book: "2 Samuel", chapter: 24, abbr: "2sa"},
-		{book: "1 Kings", chapter: 22, abbr: "1ki"},
-		{book: "2 Kings", chapter: 25, abbr: "2ki"},
-		{book: "1 Chronicles", chapter: 29, abbr: "1ch"},
-		{book: "2 Chronicles", chapter: 36, abbr: "2ch"},
-		{book: "Ezra", chapter: 10, abbr: "ezr"},
-		{book: "Nehemiah", chapter: 13, abbr: "neh"},
-		{book: "Esther", chapter: 10, abbr: "est"},
-		{book: "Job", chapter: 42, abbr: "job"},
-		{book: "Psalms", chapter: 150, abbr: "psa"},
-		{book: "Proverbs", chapter: 31, abbr: "pro"},
-		{book: "Ecclesiastes", chapter: 12, abbr: "ecc"},
-		{book: "Song of Songs", chapter: 8, abbr: "sng"},
-		{book: "Isaiah", chapter: 66, abbr: "isa"},
-		{book: "Jeremiah", chapter: 52, abbr: "jer"},
-		{book: "Lamentations", chapter: 5, abbr: "lam"},
-		{book: "Ezekiel", chapter: 48, abbr: "ezk"},
-		{book: "Daniel", chapter: 12, abbr: "dan"},
-		{book: "Hosea", chapter: 14, abbr: "hos"},
-		{book: "Joel", chapter: 3, abbr: "jol"},
-		{book: "Amos", chapter: 9, abbr: "amo"},
-		{book: "Obadiah", chapter: 1, abbr: "oba"},
-		{book: "Jonah", chapter: 4, abbr: "jon"},
-		{book: "Micah", chapter: 7, abbr: "mic"},
-		{book: "Nahum", chapter: 3, abbr: "nam"},
-		{book: "Habakkuk", chapter: 3, abbr: "hab"},
-		{book: "Zephaniah", chapter: 3, abbr: "zep"},
-		{book: "Haggai", chapter: 2, abbr: "hag"},
-		{book: "Zechariah", chapter: 14, abbr: "zec"},
-		{book: "Malachi", chapter: 4, abbr: "mal"},
-		{book: "Matthew", chapter: 28, abbr: "mat"},
-		{book: "Mark", chapter: 16, abbr: "mrk"},
-		{book: "Luke", chapter: 24, abbr: "luk"},
-		{book: "John", chapter: 21, abbr: "jhn"},
-		{book: "Acts", chapter: 28, abbr: "act"},
-		{book: "Romans", chapter: 16, abbr: "rom"},
-		{book: "1 Corinthians", chapter: 16, abbr: "1co"},
-		{book: "2 Corinthians", chapter: 13, abbr: "2co"},
-		{book: "Galatians", chapter: 6, abbr: "gal"},
-		{book: "Ephesians", chapter: 6, abbr: "eph"},
-		{book: "Philippians", chapter: 4, abbr: "php"},
-		{book: "Colossians", chapter: 4, abbr: "col"},
-		{book: "1 Thessalonians", chapter: 5, abbr: "1th"},
-		{book: "2 Thessalonians", chapter: 3, abbr: "2th"},
-		{book: "1 Timothy", chapter: 6, abbr: "1ti"},
-		{book: "2 Timothy", chapter: 4, abbr: "2ti"},
-		{book: "Titus", chapter: 3, abbr: "tit"},
-		{book: "Philemon", chapter: 1, abbr: "phm"},
-		{book: "Hebrews", chapter: 13, abbr: "heb"},
-		{book: "James", chapter: 5, abbr: "jas"},
-		{book: "1 Peter", chapter: 5, abbr: "1pe"},
-		{book: "2 Peter", chapter: 3, abbr: "2pe"},
-		{book: "1 John", chapter: 5, abbr: "1jn"},
-		{book: "2 John", chapter: 1, abbr: "2jn"},
-		{book: "3 John", chapter: 1, abbr: "3jn"},
-		{book: "Jude", chapter: 1, abbr: "jud"},
-		{book: "Revelation", chapter: 22, abbr: "rev"},
-	];
+      function chooseRandomBookAndChapterByChapter() {
+        const chapters = [];
+        window.books.forEach(book => {
+          for (i = 0; i < book.chapters; i++) {
+            chapters.push({ book, chapter: i + 1 });
+          }
+        });
 
-	var pick_chapter = function() {
-		if(window.paused !== true) {
-			var book_index = Math.floor(Math.random() * 66);
-			var chapter = Math.ceil(Math.random() * bible_chapters[book_index]["chapter"]);
+        return chapters[Math.floor(Math.random() * chapters.length)];
+      }
 
-			var book = bible_chapters[book_index]["book"];
-			var abbr = bible_chapters[book_index]["abbr"];
-
-			window.chapter = {
-				"book": book,
-				"chapter": chapter,
-				"abbr": abbr
-			};
-		}
-
-		setTimeout(pick_chapter, 0);
-	}
-
-	var display_chapter = function() {
-		if(window.chapter !== undefined) {
-			jQuery("#chapter_selection").html(window.chapter["book"] + " " + window.chapter["chapter"]);
-		}
-		setTimeout(display_chapter, 100);
-	}
-
-	jQuery(document).ready(function() {
-		jQuery(document).foundation();
-		setTimeout(pick_chapter, 0);
-		setTimeout(display_chapter, 0);
-		jQuery("#spinner").spin("large").hide();
-
-		jQuery("#youversion_iframe").load(function() {
-			jQuery("#spinner").hide(250);
-		});
-	
-		jQuery("#pause_button").on("click", function() {
-			var new_state = window.paused === true ? false : true;
-			var iframe_src = null;
-			var btn_label = jQuery("#pause_button").attr("value");
-
-			if(new_state === true) {
-
-				jQuery("#pause_button").addClass("secondary");
-				iframe_src = "https://www.youversion.com/bible/70/" + window.chapter.abbr + "." + window.chapter.chapter + ".gwt";
-				btn_label = btn_label.replace("❚❚", "▶");
-				jQuery("#spinner").show();
-			} else {
-				jQuery("#pause_button").removeClass("secondary");
-				iframe_src = "";
-				btn_label = btn_label.replace("▶", "❚❚");
-				jQuery("#spinner").hide();
-			}
-
-			window.paused = new_state;
-
-			jQuery("#pause_button").attr("value", btn_label);
-			jQuery("#youversion_iframe").attr("src", iframe_src);
-		});
-	});
-	</script>
-
-	<script type="text/javascript">
-
-	  var _gaq = _gaq || [];
-	  _gaq.push(['_setAccount', 'UA-12465139-3']);
-	  _gaq.push(['_trackPageview']);
-
-	  (function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	  })();
-
-	</script>
-
-    <script type="text/javascript">
-        var id = localStorage.getItem('logrocket_id');
-        if (!id) {
-            id = new Date().getTime();
-            localStorage.setItem('logrocket_id', id);
+      new Vue({
+        el: "#app",
+        vuetify: new Vuetify(),
+        data: {
+          showAbout: false,
+          selectedTranslation: localStorage.getItem("savedTranslation") || "GW",
+          translations: window.translations.map(translation => ({
+            text: translation.local_title,
+            value: translation.local_abbreviation
+          })),
+          displayedChapter: null,
+          paused: false,
+          weightBooksEvenly: true
+        },
+        methods: {
+          getIframeSrc() {
+            const translation = window.translations.find(
+              translation =>
+                translation.local_abbreviation === this.selectedTranslation
+            );
+            return (
+              "https://www.youversion.com/bible/" +
+              translation.id +
+              "/" +
+              this.displayedChapter.book.usfm +
+              "." +
+              this.displayedChapter.chapter +
+              "." +
+              translation.local_abbreviation.toLowerCase()
+            );
+          }
+        },
+        mounted() {
+          const animationFrameCallback = () => {
+            if (!this.paused) {
+              const fn = this.weightBooksEvenly
+                ? chooseRandomBookAndChapterByBook
+                : chooseRandomBookAndChapterByChapter;
+              this.displayedChapter = fn();
+            }
+            requestAnimationFrame(animationFrameCallback);
+          };
+          requestAnimationFrame(animationFrameCallback);
+        },
+        watch: {
+          selectedTranslation(newValue) {
+            localStorage.setItem("savedTranslation", newValue);
+          }
         }
-
-        LogRocket.identify(id, {});
+      });
     </script>
-</body>
+
+    <script>
+      (function() {
+        window.counter = "https://randombibleizer.goatcounter.com/count";
+
+        var script = document.createElement("script");
+        script.async = 1;
+        script.src = "//gc.zgo.at/count.js";
+        var ins = document.getElementsByTagName("script")[0];
+        ins.parentNode.insertBefore(script, ins);
+      })();
+    </script>
+  </body>
 </html>
