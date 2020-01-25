@@ -120,6 +120,25 @@
         dsn: "https://c722dae329914eada81cc7407fa43d71@sentry.io/1955363"
       });
 
+      // Disabled on Mobile Safari with "block all cookies" enabled
+      let canUseLocalstorage = true;
+      try {
+        localStorage.getItem('bogus');
+      } catch (ex) {
+        canUseLocalstorage = false;
+      }
+      function localstorageTryGet(key) {
+        if (canUseLocalstorage) {
+          return localStorage.getItem(key);
+        }
+        return null;
+      }
+      function localstorageTrySet(key, value) {
+        if (canUseLocalstorage) {
+          return localStorage.setItem(key, value);
+        }
+      }
+
       function chooseRandomBookAndChapterByBook() {
         var book_index = Math.floor(Math.random() * window.books.length);
         var chapter = Math.ceil(
@@ -145,7 +164,7 @@
         vuetify: new Vuetify(),
         data: {
           showDrawer: false,
-          selectedTranslation: localStorage.getItem("savedTranslation") || "GW",
+          selectedTranslation: localstorageTryGet("savedTranslation") || "GW",
           translations: window.translations.map(translation => ({
             text: translation.local_title,
             value: translation.local_abbreviation
@@ -197,7 +216,7 @@
         },
         watch: {
           selectedTranslation(newValue) {
-            localStorage.setItem("savedTranslation", newValue);
+            localstorageTrySet("savedTranslation", newValue);
           }
         }
       });
