@@ -82,6 +82,7 @@
                   :items="translations"
                   label="Remember translation"
                   v-model="selectedTranslation"
+                  v-if="canUseLocalstorage"
                 />
               </v-col>
             </v-row>
@@ -175,6 +176,7 @@
           paused: false,
           weightBooksEvenly: lsWeights ? JSON.parse(lsWeights) : true,
           iframeLoading: false,
+          canUseLocalstorage
         },
         methods: {
           getIframeSrc() {
