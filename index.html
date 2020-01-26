@@ -176,7 +176,8 @@
           paused: false,
           weightBooksEvenly: lsWeights ? JSON.parse(lsWeights) : true,
           iframeLoading: false,
-          canUseLocalstorage
+          canUseLocalstorage,
+          frameCount: 0
         },
         methods: {
           getIframeSrc() {
@@ -209,10 +210,13 @@
         mounted() {
           const animationFrameCallback = () => {
             if (!this.paused) {
+              this.frameCount += 1;
               const fn = this.weightBooksEvenly
                 ? chooseRandomBookAndChapterByBook
                 : chooseRandomBookAndChapterByChapter;
-              this.displayedChapter = fn();
+              if (this.frameCount % 5 === 0) {  // Every 5 frames
+                this.displayedChapter = fn();
+              }
             }
             requestAnimationFrame(animationFrameCallback);
           };
