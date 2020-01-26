@@ -159,6 +159,8 @@
         return chapters[Math.floor(Math.random() * chapters.length)];
       }
 
+      const lsWeights = localstorageTryGet('weightBooksEvenly');
+
       new Vue({
         el: "#app",
         vuetify: new Vuetify(),
@@ -171,7 +173,7 @@
           })),
           displayedChapter: null,
           paused: false,
-          weightBooksEvenly: true,
+          weightBooksEvenly: lsWeights ? JSON.parse(lsWeights) : true,
           iframeLoading: false,
         },
         methods: {
@@ -217,6 +219,10 @@
         watch: {
           selectedTranslation(newValue) {
             localstorageTrySet("savedTranslation", newValue);
+          },
+
+          weightBooksEvenly(newValue) {
+            localstorageTrySet("weightBooksEvenly", newValue);
           }
         }
       });
