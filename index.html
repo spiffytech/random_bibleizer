@@ -54,7 +54,7 @@
           >
         </v-app-bar>
 
-        <v-content>
+        <v-main>
           <v-container>
             <v-row justify="center" class="my-4">
               <div v-if="displayedChapter" class="display-1">
@@ -79,15 +79,26 @@
                     :value="false"
                   ></v-radio>
                 </v-radio-group>
+
               </v-col>
 
               <v-col cols="12" md="6">
-                <v-select
-                  :items="translations"
-                  label="Remember translation"
-                  v-model="selectedTranslation"
-                  v-if="canUseLocalstorage"
-                />
+                <div style="display: contents;">
+                  <v-select
+                    :items="translations"
+                    label="Remember translation"
+                    v-model="selectedTranslation"
+                    v-if="canUseLocalstorage"
+                  />
+                </div>
+
+                <div style="display: contents;">
+                  <v-select
+                    :items="subsets"
+                    label="What to randomize?"
+                    v-model="contentSubset"
+                  />
+                </div>
               </v-col>
             </v-row>
 
@@ -119,7 +130,9 @@
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+
     <script src="data.js"></script>
+
     <script>
       try {
         Sentry.init({
@@ -148,18 +161,18 @@
         }
       }
 
-      function chooseRandomBookAndChapterByBook() {
-        var book_index = Math.floor(Math.random() * window.books.length);
+      function chooseRandomBookAndChapterByBook(books) {
+        var book_index = Math.floor(Math.random() * books.length);
         var chapter = Math.ceil(
-          Math.random() * window.books[book_index]["chapters"]
+          Math.random() * books[book_index]["chapters"]
         );
 
-        return { book: window.books[book_index], chapter };
+        return { book: books[book_index], chapter };
       }
 
-      function chooseRandomBookAndChapterByChapter() {
+      function chooseRandomBookAndChapterByChapter(books) {
         const chapters = [];
-        window.books.forEach(book => {
+        books.forEach(book => {
           for (i = 0; i < book.chapters; i++) {
             chapters.push({ book, chapter: i + 1 });
           }
@@ -169,6 +182,12 @@
       }
 
       const lsWeights = localstorageTryGet('weightBooksEvenly');
+      const subsets = [
+        {text: "Whole Bible", value: [0,66]},
+        {text: "Old Testament", value: [0,39]},
+        {text: "New Testament", value: [39,66]},
+        {text: "Psalms and Proverbs", value: [18,20]}
+      ];
 
       new Vue({
         el: "#app",
@@ -183,9 +202,11 @@
           displayedChapter: null,
           paused: false,
           weightBooksEvenly: lsWeights ? JSON.parse(lsWeights) : true,
+          contentSubset: subsets[0].value,
           iframeLoading: false,
           canUseLocalstorage,
-          frameCount: 0
+          frameCount: 0,
+          subsets
         },
         methods: {
           getIframeSrc() {
@@ -223,7 +244,7 @@
                 ? chooseRandomBookAndChapterByBook
                 : chooseRandomBookAndChapterByChapter;
               if (this.frameCount % 5 === 0) {  // Every 5 frames
-                this.displayedChapter = fn();
+                this.displayedChapter = fn(window.books.slice(this.contentSubset[0], this.contentSubset[1]));
               }
             }
             requestAnimationFrame(animationFrameCallback);
