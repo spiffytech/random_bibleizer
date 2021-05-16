@@ -79,7 +79,10 @@
                     :value="false"
                   ></v-radio>
                 </v-radio-group>
-
+                <v-checkbox
+                  v-model="openInBibleAppAuotmatically"
+                  :label="`Open in Bible app automatically`"
+                ></v-checkbox>
               </v-col>
 
               <v-col cols="12" md="6">
@@ -99,6 +102,7 @@
                     v-model="contentSubset"
                   />
                 </div>
+                <v-btn :disabled="!paused" class="openBibleApp" @click="openBibleApp" :color="'primary'">Open in Bible app</v-btn>
               </v-col>
             </v-row>
 
@@ -181,7 +185,25 @@
         return chapters[Math.floor(Math.random() * chapters.length)];
       }
 
+      function getBibleAppURL(selectedTranslation, displayedChapter) {
+        const translation = window.translations.find(
+          translation =>
+            translation.local_abbreviation === selectedTranslation
+        );
+        return (
+          "https://www.youversion.com/bible/" +
+          translation.id +
+          "/" +
+          displayedChapter.book.usfm +
+          "." +
+          displayedChapter.chapter +
+          "." +
+          translation.local_abbreviation.toLowerCase()
+        );
+      }
+
       const lsWeights = localstorageTryGet('weightBooksEvenly');
+      const lsOpenAuto = localstorageTryGet('openInBibleAppAuotmatically') === 'true';
       const subsets = [
         {text: "Whole Bible", value: [0,66]},
         {text: "Old Testament", value: [0,39]},
@@ -201,6 +223,7 @@
           })),
           displayedChapter: null,
           paused: false,
+          openInBibleAppAuotmatically: lsOpenAuto,
           weightBooksEvenly: lsWeights ? JSON.parse(lsWeights) : true,
           contentSubset: subsets[0].value,
           iframeLoading: false,
@@ -210,25 +233,20 @@
         },
         methods: {
           getIframeSrc() {
-            const translation = window.translations.find(
-              translation =>
-                translation.local_abbreviation === this.selectedTranslation
-            );
-            return (
-              "https://www.youversion.com/bible/" +
-              translation.id +
-              "/" +
-              this.displayedChapter.book.usfm +
-              "." +
-              this.displayedChapter.chapter +
-              "." +
-              translation.local_abbreviation.toLowerCase()
-            );
+            return getBibleAppURL(this.selectedTranslation, this.displayedChapter);
           },
 
           toggleSpinState() {
             this.paused = !this.paused;
             this.iframeLoading = this.paused;
+
+            if (this.paused && this.openInBibleAppAuotmatically) {
+              window.open(getBibleAppURL(this.selectedTranslation, this.displayedChapter), '_blank');
+            }
+          },
+
+          openBibleApp() {
+            window.open(getBibleAppURL(this.selectedTranslation, this.displayedChapter), '_blank');
           },
 
           iframeLoaded() {
@@ -258,6 +276,10 @@
 
           weightBooksEvenly(newValue) {
             localstorageTrySet("weightBooksEvenly", newValue);
+          },
+
+          openInBibleAppAuotmatically(newValue) {
+            localstorageTrySet("openInBibleAppAuotmatically", newValue);
           }
         }
       });
