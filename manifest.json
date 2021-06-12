@@ -1,0 +1,28 @@
+{
+  "dir": "ltr",
+  "lang": "en",
+  "name": "Random Bibleizer",
+  "short_name": "RandomBibleizer",
+  "scope": "/",
+  "display": "minimal-ui",
+  "start_url": "https://randombibleizer.spiffy.tech/",
+  "background_color": "#000000",
+  "theme_color": "transparent",
+  "description": "Select a random Bible chapter to read in any English translation. If you're not sure what to read today, start here!",
+  "orientation": "any",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/favicons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicons/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "url": "https://randombibleizer.spiffy.tech"
+}
