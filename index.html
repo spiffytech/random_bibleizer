@@ -230,7 +230,7 @@
           contentSubset: subsets[0].value,
           iframeLoading: false,
           canUseLocalstorage,
-          frameCount: 0,
+          lastDraw: 0,
           subsets
         },
         methods: {
@@ -258,14 +258,21 @@
         },
         mounted() {
           const animationFrameCallback = () => {
-            if (!this.paused) {
-              this.frameCount += 1;
-              const fn = this.weightBooksEvenly
-                ? chooseRandomBookAndChapterByBook
-                : chooseRandomBookAndChapterByChapter;
-              if (this.frameCount % 5 === 0) {  // Every 5 frames
-                this.displayedChapter = fn(window.books.slice(this.contentSubset[0], this.contentSubset[1]));
-              }
+            if (this.paused) {
+              requestAnimationFrame(animationFrameCallback);
+              return
+            }
+
+            const fn = this.weightBooksEvenly
+              ? chooseRandomBookAndChapterByBook
+              : chooseRandomBookAndChapterByChapter;
+
+            // We want to explicitly throttle on time, not frame rate.
+            // High-refresh mobile displays still feel caffeinated if we lock on
+            // framerate.
+            if (this.lastDraw <= performance.now() - 180) {
+              this.displayedChapter = fn(window.books.slice(this.contentSubset[0], this.contentSubset[1]));
+              this.lastDraw = performance.now();
             }
             requestAnimationFrame(animationFrameCallback);
           };
