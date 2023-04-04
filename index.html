@@ -92,6 +92,7 @@
                   <v-select
                     :items="translations"
                     label="Remember translation"
+                    bg-color="secondary"
                     v-model="selectedTranslation"
                     v-if="canUseLocalstorage"
                   />
@@ -101,6 +102,7 @@
                   <v-select
                     :items="subsets"
                     label="What to randomize?"
+                    bg-color="secondary"
                     v-model="contentSubset"
                   />
                 </div>
