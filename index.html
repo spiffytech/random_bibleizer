@@ -10,7 +10,7 @@
       rel="stylesheet"
     />
     <link
-      href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
+      href="https://cdn.jsdelivr.net/npm/vuetify@3.x/dist/vuetify.min.css"
       rel="stylesheet"
     />
     <meta
@@ -37,12 +37,12 @@
       <v-app>
         <v-navigation-drawer app v-model="showDrawer" class="d-sm-none" disable-resize-watcher>
           <v-list-item>
-            <v-btn text href="mailto:hello@spiffy.tech?subject=%5BRandom%20Bibleizer%5D">Contact Me</v-btn>
+            <v-btn href="mailto:hello@spiffy.tech?subject=%5BRandom%20Bibleizer%5D">Contact Me</v-btn>
           </v-list-item>
           <v-list-item>
-            <v-btn text href="https://github.com/spiffytech/random_bibleizer"
-              >Source Code</v-btn
-            >
+            <v-btn href="https://github.com/spiffytech/random_bibleizer">
+              Source Code
+            </v-btn>
           </v-list-item>
         </v-navigation-drawer>
 
@@ -50,16 +50,16 @@
           <v-app-bar-nav-icon @click.stop="showDrawer = !showDrawer" class="d-sm-none"></v-app-bar-nav-icon>
           <v-toolbar-title>Random Bibleizer</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn text href="mailto:hello@spiffy.tech" class="d-none d-sm-flex">Contact Me</v-btn>
-          <v-btn text href="https://github.com/spiffytech/random_bibleizer" class="d-none d-sm-flex"
-            >Source Code</v-btn
-          >
+          <v-btn href="mailto:hello@spiffy.tech?subject=%5BRandom%20Bibleizer%5D" class="d-none d-sm-flex">Contact Me</v-btn>
+          <v-btn href="https://github.com/spiffytech/random_bibleizer" class="d-none d-sm-flex">
+            Source Code
+          </v-btn>
         </v-app-bar>
 
         <v-main>
           <v-container>
             <v-row justify="center" class="my-4">
-              <div v-if="displayedChapter" class="display-1">
+              <div v-if="displayedChapter" class="text-h4">
                 {{displayedChapter.book.human}} {{displayedChapter.chapter}}
               </div>
             </v-row>
@@ -67,7 +67,7 @@
             <v-row justify="center" class="my-4">
               <v-btn
                 @click="toggleSpinState"
-                :color="paused ? null : 'primary'"
+                :color="paused ? 'secondary' : 'primary'"
                 >{{ paused ? "Randomize" : "Stop shuffling" }}</v-btn
               >
             </v-row>
@@ -134,8 +134,8 @@
       integrity="sha384-r7/ZcDRYpWjCNXLUKk3iuyyyEcDJ+o+3M5CqXP5GUGODYbolXewNHAZLYSJ3ZHcV"
       crossorigin="anonymous"
     ></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@3.x/dist/vuetify.js"></script>
 
     <script src="data.js"></script>
 
@@ -207,32 +207,32 @@
       const lsWeights = localstorageTryGet('weightBooksEvenly');
       const lsOpenAuto = localstorageTryGet('openInBibleAppAuotmatically') === 'true';
       const subsets = [
-        {text: "Whole Bible", value: [0,66]},
-        {text: "Old Testament", value: [0,39]},
-        {text: "New Testament", value: [39,66]},
-        {text: "Psalms and Proverbs", value: [18,20]}
+        {title: "Whole Bible", value: [0,66]},
+        {title: "Old Testament", value: [0,39]},
+        {title: "New Testament", value: [39,66]},
+        {title: "Psalms and Proverbs", value: [18,20]}
       ];
 
-      new Vue({
-        el: "#app",
-        vuetify: new Vuetify(),
-        data: {
+      const {createApp} = Vue;
+
+      const app = createApp({
+        data: () => ({
           showDrawer: false,
           selectedTranslation: localstorageTryGet("savedTranslation") || "GW",
           translations: window.translations.map(translation => ({
-            text: translation.local_title,
+            title: translation.local_title,
             value: translation.local_abbreviation
           })),
           displayedChapter: null,
           paused: false,
           openInBibleAppAuotmatically: lsOpenAuto,
           weightBooksEvenly: lsWeights ? JSON.parse(lsWeights) : true,
-          contentSubset: subsets[0].value,
+          contentSubset: subsets[0],
           iframeLoading: false,
           canUseLocalstorage,
           lastDraw: 0,
           subsets
-        },
+        }),
         methods: {
           getIframeSrc() {
             return getBibleAppURL(this.selectedTranslation, this.displayedChapter);
@@ -291,7 +291,23 @@
             localstorageTrySet("openInBibleAppAuotmatically", newValue);
           }
         }
+      })
+
+      const vuetify = Vuetify.createVuetify({
+        theme: {
+          themes: {
+            light: {
+              dark: false,
+              colors: {
+                primary: '#3b82f6',
+                secondary: '#eff6ff'
+              }
+            },
+          },
+        },
       });
+      app.use(vuetify)
+        .mount("#app");
     </script>
 
     <script>
