@@ -221,10 +221,12 @@
         data: () => ({
           showDrawer: false,
           selectedTranslation: localstorageTryGet("savedTranslation") || "GW",
-          translations: window.translations.map(translation => ({
-            title: translation.local_title,
-            value: translation.local_abbreviation
-          })),
+          translations: window.translations
+            .sort((a,b) => a.local_title < b.local_title ? -1 : 1)
+            .map(translation => ({
+              title: translation.local_title,
+              value: translation.local_abbreviation
+            })),
           displayedChapter: null,
           paused: false,
           openInBibleAppAuotmatically: lsOpenAuto,
