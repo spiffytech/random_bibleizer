@@ -144,7 +144,8 @@
     <script>
       try {
         Sentry.init({
-          dsn: "https://c722dae329914eada81cc7407fa43d71@sentry.io/1955363"
+          dsn: "https://c722dae329914eada81cc7407fa43d71@sentry.io/1955363",
+          ignoreUrls: [/www\.bible\.com/]
         });
       } catch (ex) {
         // User is using a tracker blocker
