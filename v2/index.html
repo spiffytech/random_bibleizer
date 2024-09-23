@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Random Bibleizer - Choose a Random Bible Chapter to Read</title>
+    <meta
+      name="description"
+      content="Select a random Bible chapter to read in any English translation. If you're not sure what to read today, start here!"
+    />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/favicons/favicon.ico" />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <noscript>
+      <p>
+        If you see this message, it means you've disabled scripts on your browser (either you have
+        JavaScript turned off, or maybe you're using AdBlock Plus / uBlock Origin). Please enable
+        scripts for this site to run.
+      </p>
+    </noscript>
+
+    <div id="app" class="mx-4"></div>
+    <script type="module" src="/src/main.ts"></script>
+
+    <script>
+      (() => {
+        window.counter = 'https://randombibleizer.goatcounter.com/count';
+
+        var script = document.createElement('script');
+        script.async = 1;
+        script.src = '//gc.zgo.at/count.js';
+        var ins = document.getElementsByTagName('script')[0];
+        ins.parentNode.insertBefore(script, ins);
+      })();
+    </script>
+  </body>
+</html>
