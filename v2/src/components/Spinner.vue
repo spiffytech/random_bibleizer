@@ -103,6 +103,7 @@ const togglePause = () => {
 };
 
 const weightBooksEvenly = localStorageValue('weightBooksEvenly', true);
+watchEffect(() => localstorageTrySet('weightBooksEvenly', JSON.stringify(weightBooksEvenly.value)));
 const randomizeFn = computed(() =>
   weightBooksEvenly.value ? randomizeByBook : randomizeByAllChapters
 );
@@ -177,7 +178,6 @@ let vals = ref(['alpha', 'bravo', 'charlie', 'delta']);
   </sl-button>
 
   <form>
-    <p>{{ weightBooksEvenly }}</p>
     <sl-radio-group
       label="Randomization method"
       :value="weightBooksEvenly"
