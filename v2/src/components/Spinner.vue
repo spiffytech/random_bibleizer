@@ -2,7 +2,7 @@
 import { ref, watchEffect, computed } from 'vue';
 import type { Ref, UnwrapRef } from 'vue';
 
-import { books as allBooks } from '../books';
+import { books as allBooks, translations } from '../books';
 import type { Book, Passage } from '../books';
 
 const emit = defineEmits<{
@@ -38,14 +38,14 @@ const randomNumberInclExcl = (min: number, max: number) => {
   return Math.random() * (max - min) + min;
 };
 
-const randomizeByBook = (selectedBooks: Book[]): Passage => {
+const randomizeByBook = (selectedBooks: Book[]): Pick<Passage, 'book' | 'chapter'> => {
   var book_index = Math.floor(Math.random() * selectedBooks.length);
   var chapter = Math.ceil(Math.random() * selectedBooks[book_index].chapters);
 
   return { book: selectedBooks[book_index], chapter };
 };
 
-const randomizeByAllChapters = (selectedBooks: Book[]): Passage => {
+const randomizeByAllChapters = (selectedBooks: Book[]): Pick<Passage, 'book' | 'chapter'> => {
   const totalChapters = selectedBooks.reduce((acc, book) => acc + book.chapters, 0);
   const targetChapter = randomNumberInclExcl(0, totalChapters + 1);
   let acc = 0;
@@ -102,23 +102,34 @@ const randomizeFn = computed(() =>
 );
 const lsOpenAuto = localStorageValue('openInBibleAppAuotmatically', true);
 const selectedTranslation = localStorageValue('savedTranslation', 'GW');
-const subsets = {
-  'Whole Bible': [0, 66],
-  'Old Testament': [0, 39],
-  'New Testament': [39, 66],
-  'Psalms and Proverbs': [18, 20]
-};
-const selectedSubet = ref(subsets['Whole Bible']);
+interface Subset {
+  name: string;
+  range: [number, number];
+}
+const subsets: Subset[] = [
+  { name: 'Whole Bible', range: [0, 66] },
+  { name: 'Old Testament', range: [0, 39] },
+  { name: 'New Testament', range: [39, 66] },
+  { name: 'Psalms and Proverbs', range: [18, 20] }
+];
+const selectedSubset = ref(subsets[0]) as Ref<Subset>;
 
-const displayedPassage = ref({ book: allBooks[0], chapter: 1 });
+const displayedPassage = ref({
+  book: allBooks[0],
+  chapter: 1,
+  translation: translations.find((t) => t.abbreviation === 'GW')!
+}) as Ref<Passage>;
 const redraw = () => {
   if (paused.value === true) {
     return;
   }
 
-  const startBook = selectedSubet.value[0];
-  const endBook = selectedSubet.value[1];
-  displayedPassage.value = randomizeFn.value(allBooks.slice(startBook, endBook));
+  const startBook = selectedSubset.value.range[0];
+  const endBook = selectedSubset.value.range[1];
+  displayedPassage.value = {
+    ...displayedPassage.value,
+    ...randomizeFn.value(allBooks.slice(startBook, endBook))
+  };
 };
 
 let lastDrawTime = performance.now();
@@ -134,11 +145,57 @@ const animationFrameCallback = () => {
   requestAnimationFrame(animationFrameCallback);
 };
 requestAnimationFrame(animationFrameCallback);
+const $window = window;
+
+const translationsDatalistModel = ref(displayedPassage.value.translation.title);
+const translationDatalistValid = ref(true);
+watchEffect(() => {
+  const translation = translations.find((t) => t.title === translationsDatalistModel.value);
+  if (translation) {
+    displayedPassage.value.translation = translation;
+    translationDatalistValid.value = true;
+  } else {
+    translationDatalistValid.value = false;
+  }
+});
+
+let vals = ref(['alpha', 'bravo', 'charlie', 'delta']);
 </script>
 
 <template>
   <div>{{ displayedPassage.book.human }} {{ displayedPassage.chapter }}</div>
   <sl-button @click.prevent="togglePause">
-    <span v-if="paused">Stop shuffling</span><span v-else>Randomize</span>
+    <span v-if="paused">Randomize</span><span v-else>Stop shuffling</span>
   </sl-button>
+
+  <form>
+    <sl-radio-group
+      label="What to randomize"
+      :value="selectedSubset.name"
+      @sl-change="selectedSubset = subsets.find((s) => s.name === $event.target.value)!"
+    >
+      <sl-radio v-for="subset in subsets" :key="subset.name" :value="subset.name">
+        {{ subset.name }}
+      </sl-radio>
+    </sl-radio-group>
+
+    <label class="flex flex-col" :class="[!translationDatalistValid && 'border-2 border-red-500']">
+      <span>Translation</span>
+      <input
+        type="text"
+        list="translations"
+        class="px-4 py-2 border-2 border-gray-200 rounded-md"
+        v-model="translationsDatalistModel"
+      />
+      <datalist id="translations">
+        <option
+          v-for="translation in translations"
+          :key="translation.abbreviation"
+          :__value="translation.title"
+        >
+          {{ translation.title }}
+        </option>
+      </datalist>
+    </label>
+  </form>
 </template>

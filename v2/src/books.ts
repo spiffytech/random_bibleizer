@@ -108,4 +108,4 @@ export const books = [
 
 export type Book = (typeof books)[number];
 
-export type Passage = { book: Book; chapter: number };
+export type Passage = { book: Book; chapter: number; translation: Translation };
