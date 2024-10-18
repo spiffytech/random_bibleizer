@@ -60,5 +60,10 @@ watchEffect(() => {
         </option>
       </datalist>
     </label>
+
+    <label
+      >Automatically open in Bible App
+      <input type="checkbox" v-model="configuration.openInBibleAppAuotmatically"
+    /></label>
   </form>
 </template>

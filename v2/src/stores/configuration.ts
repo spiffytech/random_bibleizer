@@ -29,7 +29,7 @@ const localstorageTrySet = (key: string, value: string) => {
   }
 };
 
-const localStorageValue = <T>(key: string, defaultValue: T): Ref<T> => {
+const persistentLocalStorageValue = <T>(key: string, defaultValue: T): Ref<T> => {
   const storedValue = localstorageTryGet(key);
   // No idea why the cast is necessary
   const valueRef = ref(defaultValue) as Ref<T>;
@@ -47,24 +47,16 @@ const localStorageValue = <T>(key: string, defaultValue: T): Ref<T> => {
 };
 
 export default defineStore('configuration', () => {
-  const weightBooksEvenly = ref(localStorageValue('weightBooksEvenly', true));
+  const weightBooksEvenly = ref(persistentLocalStorageValue('weightBooksEvenly', true));
 
-  const savedTranslationAbbr = localStorageValue('savedTranslation', 'GW').value;
+  const savedTranslationAbbr = persistentLocalStorageValue('savedTranslation', 'GW').value;
   const translation = ref(translations.find((t) => t.abbreviation === savedTranslationAbbr)!);
 
-  const openInBibleAppAuotmatically = ref(localStorageValue('openInBibleAppAuotmatically', true));
+  const openInBibleAppAuotmatically = ref(
+    persistentLocalStorageValue('openInBibleAppAuotmatically', false)
+  );
 
   const selectedBookRange = ref(bookRanges[0]) as Ref<BooksRange>;
-
-  watchEffect(() => {
-    console.log('here');
-    localstorageTrySet('weightBooksEvenly', JSON.stringify(weightBooksEvenly.value));
-    localstorageTrySet('savedTranslation', JSON.stringify(translation.value.abbreviation));
-    localstorageTrySet(
-      'openInBibleAppAuotmatically',
-      JSON.stringify(openInBibleAppAuotmatically.value)
-    );
-  });
 
   return { weightBooksEvenly, translation, openInBibleAppAuotmatically, selectedBookRange };
 });
