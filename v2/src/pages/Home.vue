@@ -5,6 +5,7 @@ import type { Ref } from 'vue';
 import type { Book, Passage } from '../books';
 
 import Spinner from '../components/Spinner.vue';
+import Configurator from '@/components/Configurator.vue';
 import YouVersion from '@/components/YouVersion.vue';
 
 const passage = ref(null) as Ref<Passage | null>;
@@ -12,5 +13,6 @@ const passage = ref(null) as Ref<Passage | null>;
 
 <template>
   <Spinner @select-book="passage = $event" />
+  <Configurator />
   <YouVersion v-if="passage" :passage="passage" />
 </template>

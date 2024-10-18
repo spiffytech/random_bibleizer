@@ -106,6 +106,18 @@ export const books = [
   { human: 'Revelation', abbr: 'REV', chapters: 22 }
 ];
 
+export const bookRanges: BooksRange[] = [
+  { name: 'Whole Bible', range: [0, 66] },
+  { name: 'Old Testament', range: [0, 39] },
+  { name: 'New Testament', range: [39, 66] },
+  { name: 'Psalms and Proverbs', range: [18, 20] }
+];
+
 export type Book = (typeof books)[number];
 
 export type Passage = { book: Book; chapter: number; translation: Translation };
+
+export interface BooksRange {
+  name: string;
+  range: [number, number];
+}
