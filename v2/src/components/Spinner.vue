@@ -141,19 +141,11 @@ const redraw = () => {
 };
 
 let lastDrawTime = performance.now();
-const animationFrameCallback = () => {
-  // We want to explicitly throttle on time, not frame rate.
-  // High-refresh mobile displays still feel caffeinated if we lock on
-  // framerate. 180 is an arbitrary magic number that feels right when I see it
-  // on screen.
-  if (lastDrawTime <= performance.now() - 180) {
-    redraw();
-    lastDrawTime = performance.now();
-  }
-  requestAnimationFrame(animationFrameCallback);
-};
-requestAnimationFrame(animationFrameCallback);
-const $window = window;
+// We want to explicitly throttle on time, not frame rate. High-refresh mobile
+// displays still feel caffeinated if we lock on framerate. 180 is an arbitrary
+// magic number that feels right when I see it on screen.
+setInterval(redraw, 180);
+redraw();
 
 const translationsDatalistModel = ref(displayedPassage.value.translation.title);
 const translationDatalistValid = ref(true);
