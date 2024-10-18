@@ -28,6 +28,11 @@ const localstorageTrySet = (key: string, value: string) => {
     return localStorage.setItem(key, value);
   }
 };
+const localstorageTryDelete = (key: string) => {
+  if (canUseLocalstorage) {
+    return localStorage.removeItem(key);
+  }
+};
 
 const persistentLocalStorageValue = <T>(key: string, defaultValue: T): Ref<T> => {
   const storedValue = localstorageTryGet(key);
@@ -52,11 +57,23 @@ export default defineStore('configuration', () => {
   const savedTranslationAbbr = persistentLocalStorageValue('savedTranslation', 'GW').value;
   const translation = ref(translations.find((t) => t.abbreviation === savedTranslationAbbr)!);
 
-  const openInBibleAppAuotmatically = ref(
-    persistentLocalStorageValue('openInBibleAppAuotmatically', false)
+  const openInBibleAppAutomatically = persistentLocalStorageValue(
+    'openInBibleAppAutomatically',
+    false
   );
+  // Ughhhh we put a typo in prod and now we have to support it
+  const typoedValue = localstorageTryGet('openInBibleAppAuotmatically');
+  if (typoedValue) {
+    openInBibleAppAutomatically.value = typoedValue === 'true';
+    localstorageTryDelete('openInBibleAppAuotmatically');
+  }
 
   const selectedBookRange = ref(bookRanges[0]) as Ref<BooksRange>;
 
-  return { weightBooksEvenly, translation, openInBibleAppAuotmatically, selectedBookRange };
+  return {
+    weightBooksEvenly,
+    translation,
+    openInBibleAppAuotmatically: openInBibleAppAutomatically,
+    selectedBookRange
+  };
 });
