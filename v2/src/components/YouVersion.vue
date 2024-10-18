@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
-import type { Passage, Translation } from '../books';
+import type { Passage } from '../books';
+
+import useConfigStore from '@/stores/configuration';
+
+const configuration = useConfigStore();
 
 const props = defineProps<{
   passage: Passage;
@@ -21,41 +25,49 @@ const getBibleAppURL = () => {
   baseUrl.pathname = urlPath;
   return baseUrl.toString();
 };
+
+watchEffect(() => {
+  if (props.passage && configuration.openInBibleAppAuotmatically) {
+    window.open(getBibleAppURL(), '_blank');
+  }
+});
 </script>
 
 <template>
-  <div v-if="loading" class="flex flex-col gap-2 max-w-md mx-auto">
-    <span class="flex gap-2">
-      <sl-skeleton class="w-5/12" effect="sheen" />
-      <sl-skeleton class="w-3/12" effect="sheen" />
-    </span>
+  <template v-if="!configuration.openInBibleAppAuotmatically">
+    <div v-if="loading" class="flex flex-col gap-2 max-w-md mx-auto">
+      <span class="flex gap-2">
+        <sl-skeleton class="w-5/12" effect="sheen" />
+        <sl-skeleton class="w-3/12" effect="sheen" />
+      </span>
 
-    <span class="flex gap-2">
-      <sl-skeleton class="w-4/12" effect="sheen" />
-      <sl-skeleton class="w-2/12" effect="sheen" />
-      <sl-skeleton class="w-5/12" effect="sheen" />
-      <sl-skeleton class="w-1/12" effect="sheen" />
-    </span>
+      <span class="flex gap-2">
+        <sl-skeleton class="w-4/12" effect="sheen" />
+        <sl-skeleton class="w-2/12" effect="sheen" />
+        <sl-skeleton class="w-5/12" effect="sheen" />
+        <sl-skeleton class="w-1/12" effect="sheen" />
+      </span>
 
-    <span class="flex gap-2">
-      <sl-skeleton class="w-4/12" effect="sheen" />
-      <sl-skeleton class="w-2/12" effect="sheen" />
-      <sl-skeleton class="w-4/12" effect="sheen" />
-    </span>
+      <span class="flex gap-2">
+        <sl-skeleton class="w-4/12" effect="sheen" />
+        <sl-skeleton class="w-2/12" effect="sheen" />
+        <sl-skeleton class="w-4/12" effect="sheen" />
+      </span>
 
-    <span class="flex gap-2">
-      <sl-skeleton class="w-7/12" effect="sheen" />
-      <sl-skeleton class="w-7/12" effect="sheen" />
-      <sl-skeleton class="w-1/12" effect="sheen" />
-      <sl-skeleton class="w-2/12" effect="sheen" />
-    </span>
-  </div>
+      <span class="flex gap-2">
+        <sl-skeleton class="w-7/12" effect="sheen" />
+        <sl-skeleton class="w-7/12" effect="sheen" />
+        <sl-skeleton class="w-1/12" effect="sheen" />
+        <sl-skeleton class="w-2/12" effect="sheen" />
+      </span>
+    </div>
 
-  <iframe
-    ref="bible.com"
-    :src="getBibleAppURL()"
-    frameborder="0"
-    style="width: 100%; height: 10000px"
-    @load.prevent="loading = false"
-  ></iframe>
+    <iframe
+      ref="bible.com"
+      :src="getBibleAppURL()"
+      frameborder="0"
+      style="width: 100%; height: 10000px"
+      @load.prevent="loading = false"
+    ></iframe>
+  </template>
 </template>
