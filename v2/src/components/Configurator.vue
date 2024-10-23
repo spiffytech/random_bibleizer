@@ -26,11 +26,11 @@ watchEffect(() => {
     <fieldset>
       <label>
         <RadioButton v-model="configuration.weightBooksEvenly" :value="true" />
-        Yes, random books
+        Randomize each book
       </label>
       <label>
         <RadioButton v-model="configuration.weightBooksEvenly" :value="false" />
-        No, random chapters
+        Randomize all chapters at once
       </label>
     </fieldset>
 
