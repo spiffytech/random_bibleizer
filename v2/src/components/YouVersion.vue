@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 
+import Skeleton from 'primevue/skeleton';
+
 import type { Passage } from '../books';
 
 import useConfigStore from '@/stores/configuration';
@@ -37,28 +39,28 @@ watchEffect(() => {
   <template v-if="!configuration.openInBibleAppAuotmatically">
     <div v-if="loading" class="flex flex-col gap-2 max-w-md mx-auto">
       <span class="flex gap-2">
-        <sl-skeleton class="w-5/12" effect="sheen" />
-        <sl-skeleton class="w-3/12" effect="sheen" />
+        <Skeleton class="w-5/12" effect="sheen" />
+        <Skeleton class="w-3/12" effect="sheen" />
       </span>
 
       <span class="flex gap-2">
-        <sl-skeleton class="w-4/12" effect="sheen" />
-        <sl-skeleton class="w-2/12" effect="sheen" />
-        <sl-skeleton class="w-5/12" effect="sheen" />
-        <sl-skeleton class="w-1/12" effect="sheen" />
+        <Skeleton class="w-4/12" effect="sheen" />
+        <Skeleton class="w-2/12" effect="sheen" />
+        <Skeleton class="w-5/12" effect="sheen" />
+        <Skeleton class="w-1/12" effect="sheen" />
       </span>
 
       <span class="flex gap-2">
-        <sl-skeleton class="w-4/12" effect="sheen" />
-        <sl-skeleton class="w-2/12" effect="sheen" />
-        <sl-skeleton class="w-4/12" effect="sheen" />
+        <Skeleton class="w-4/12" effect="sheen" />
+        <Skeleton class="w-2/12" effect="sheen" />
+        <Skeleton class="w-4/12" effect="sheen" />
       </span>
 
       <span class="flex gap-2">
-        <sl-skeleton class="w-7/12" effect="sheen" />
-        <sl-skeleton class="w-7/12" effect="sheen" />
-        <sl-skeleton class="w-1/12" effect="sheen" />
-        <sl-skeleton class="w-2/12" effect="sheen" />
+        <Skeleton class="w-7/12" effect="sheen" />
+        <Skeleton class="w-7/12" effect="sheen" />
+        <Skeleton class="w-1/12" effect="sheen" />
+        <Skeleton class="w-2/12" effect="sheen" />
       </span>
     </div>
 

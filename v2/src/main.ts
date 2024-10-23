@@ -1,14 +1,6 @@
 import './assets/main.css';
 
-// TODO: Break this into individual imports so we don't get a 500KB JS payload
-import '@shoelace-style/shoelace';
-
 import PrimeVue from 'primevue/config';
-
-import '@shoelace-style/shoelace/dist/themes/light.css';
-import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js';
-
-setBasePath('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.16.0/cdn/');
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
