@@ -2,6 +2,8 @@
 import { ref, computed } from 'vue';
 import type { Ref } from 'vue';
 
+import Button from 'primevue/button';
+
 import useConfigStore from '@/stores/configuration';
 
 import { books as allBooks } from '../books';
@@ -98,7 +100,5 @@ redraw();
 
 <template>
   <div>{{ displayedPassage.book.human }} {{ displayedPassage.chapter }}</div>
-  <sl-button @click.prevent="togglePause">
-    <span v-if="paused">Randomize</span><span v-else>Stop shuffling</span>
-  </sl-button>
+  <Button @click.prevent="togglePause" :label="paused ? 'Randomize' : 'Stop shuffling'" />
 </template>

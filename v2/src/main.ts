@@ -1,17 +1,25 @@
-import './assets/main.css'
+import './assets/main.css';
 
 // TODO: Break this into individual imports so we don't get a 500KB JS payload
-import '@shoelace-style/shoelace'
+import '@shoelace-style/shoelace';
 
-import '@shoelace-style/shoelace/dist/themes/light.css'
-import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js'
+import PrimeVue from 'primevue/config';
 
-setBasePath('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.16.0/cdn/')
+import '@shoelace-style/shoelace/dist/themes/light.css';
+import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js';
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+setBasePath('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.16.0/cdn/');
 
-import App from './App.vue'
-import router from './router'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 
-createApp(App).use(createPinia()).use(router).mount('#app')
+import App from './App.vue';
+import router from './router';
+
+createApp(App)
+  .use(createPinia())
+  .use(router)
+  .use(PrimeVue, {
+    theme: 'none'
+  })
+  .mount('#app');

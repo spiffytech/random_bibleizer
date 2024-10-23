@@ -1,3 +1,76 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import './primevue/tailwind.css';
+@import 'tailwindcss/utilities';
+/* Primary and Surface Palettes */
+:root {
+  --p-primary-50: theme('colors.sky.50');
+  --p-primary-100: theme('colors.sky.100');
+  --p-primary-200: theme('colors.sky.200');
+  --p-primary-300: theme('colors.sky.300');
+  --p-primary-400: theme('colors.sky.400');
+  --p-primary-500: theme('colors.sky.500');
+  --p-primary-600: theme('colors.sky.600');
+  --p-primary-700: theme('colors.sky.700');
+  --p-primary-800: theme('colors.sky.800');
+  --p-primary-900: theme('colors.sky.900');
+  --p-primary-950: theme('colors.sky.950');
+  --p-surface-0: theme('colors.white');
+  --p-surface-50: theme('colors.zinc.50');
+  --p-surface-100: theme('colors.zinc.100');
+  --p-surface-200: theme('colors.zinc.200');
+  --p-surface-300: theme('colors.zinc.300');
+  --p-surface-400: theme('colors.zinc.400');
+  --p-surface-500: theme('colors.zinc.500');
+  --p-surface-600: theme('colors.zinc.600');
+  --p-surface-700: theme('colors.zinc.700');
+  --p-surface-800: theme('colors.zinc.800');
+  --p-surface-900: theme('colors.zinc.900');
+  --p-surface-950: theme('colors.zinc.950');
+  --p-content-border-radius: 6px;
+}
+/* Light */
+:root {
+  --p-primary-color: var(--p-primary-500);
+  --p-primary-contrast-color: var(--p-surface-0);
+  --p-primary-hover-color: var(--p-primary-600);
+  --p-primary-active-color: var(--p-primary-700);
+  --p-content-border-color: var(--p-surface-200);
+  --p-content-hover-background: var(--p-surface-100);
+  --p-content-hover-color: var(--p-surface-800);
+  --p-highlight-background: var(--p-primary-50);
+  --p-highlight-color: var(--p-primary-700);
+  --p-highlight-focus-background: var(--p-primary-100);
+  --p-highlight-focus-color: var(--p-primary-800);
+  --p-text-color: var(--p-surface-700);
+  --p-text-hover-color: var(--p-surface-800);
+  --p-text-muted-color: var(--p-surface-500);
+  --p-text-hover-muted-color: var(--p-surface-600);
+}
+/*
+* Dark Mode
+* Defaults to system, change the selector to match the darkMode in tailwind.config.
+* For example;
+* darkMode: ['selector', '[class*="app-dark"]']
+* should be;
+* :root[class="app-dark"] {
+*/
+@media (prefers-color-scheme: dark) {
+  :root {
+    --p-primary-color: var(--p-primary-400);
+    --p-primary-contrast-color: var(--p-surface-900);
+    --p-primary-hover-color: var(--p-primary-300);
+    --p-primary-active-color: var(--p-primary-200);
+    --p-content-border-color: var(--p-surface-700);
+    --p-content-hover-background: var(--p-surface-800);
+    --p-content-hover-color: var(--p-surface-0);
+    --p-highlight-background: color-mix(in srgb, var(--p-primary-400), transparent 84%);
+    --p-highlight-color: rgba(255, 255, 255, 0.87);
+    --p-highlight-focus-background: color-mix(in srgb, var(--p-primary-400), transparent 76%);
+    --p-highlight-focus-color: rgba(255, 255, 255, 0.87);
+    --p-text-color: var(--p-surface-0);
+    --p-text-hover-color: var(--p-surface-0);
+    --p-text-muted-color: var(--p-surface-400);
+    --p-text-hover-muted-color: var(--p-surface-300);
+  }
+}
