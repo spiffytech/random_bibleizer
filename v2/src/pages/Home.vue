@@ -14,7 +14,7 @@ const passage = ref(null) as Ref<Passage | null>;
 <template>
   <Spinner @select-book="passage = $event" />
 
-  <div class="mx-auto md:max-w-md lg:max-w-lg">
+  <div class="mx-auto mt-8 md:max-w-md lg:max-w-lg mb-8">
     <Configurator />
   </div>
   <YouVersion v-if="passage" :passage="passage" />
