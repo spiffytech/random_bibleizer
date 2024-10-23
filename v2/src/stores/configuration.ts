@@ -1,4 +1,4 @@
-import { ref, watchEffect } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import { defineStore } from 'pinia';
 
 import type { Ref } from 'vue';
@@ -54,8 +54,12 @@ const persistentLocalStorageValue = <T>(key: string, defaultValue: T): Ref<T> =>
 export default defineStore('configuration', () => {
   const weightBooksEvenly = ref(persistentLocalStorageValue('weightBooksEvenly', true));
 
-  const savedTranslationAbbr = persistentLocalStorageValue('savedTranslation', 'GW').value;
-  const translation = ref(translations.find((t) => t.abbreviation === savedTranslationAbbr)!);
+  // This is an incredibly clumsy way to handle persisting this value, but I
+  // don't know what else to do and I don't care enough to make it better.
+  // Doesn't matter.
+  const savedTranslationAbbr = persistentLocalStorageValue('savedTranslation', 'GW');
+  const translation = ref(translations.find((t) => t.abbreviation === savedTranslationAbbr.value)!);
+  watchEffect(() => (savedTranslationAbbr.value = translation.value.abbreviation));
 
   const openInBibleAppAutomatically = persistentLocalStorageValue(
     'openInBibleAppAutomatically',

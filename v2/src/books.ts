@@ -115,7 +115,7 @@ export const bookRanges: BooksRange[] = [
 
 export type Book = (typeof books)[number];
 
-export type Passage = { book: Book; chapter: number; translation: Translation };
+export type Passage = { book: Book; chapter: number };
 
 export interface BooksRange {
   name: string;

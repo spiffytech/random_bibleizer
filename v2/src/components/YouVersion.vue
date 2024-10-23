@@ -13,17 +13,15 @@ const props = defineProps<{
   passage: Passage;
 }>();
 
-const emit = defineEmits<{}>();
-
 const loading = ref(true);
 
 const getBibleAppURL = () => {
   const {
-    passage: { book, chapter, translation }
+    passage: { book, chapter }
   } = props;
 
   const baseUrl = new URL('https://www.bible.com');
-  const urlPath = `/bible/${translation.id}/${book.abbr}.${chapter}.${translation.local_abbreviation.toLowerCase()}`;
+  const urlPath = `/bible/${configuration.translation.id}/${book.abbr}.${chapter}.${configuration.translation.local_abbreviation.toLowerCase()}`;
   baseUrl.pathname = urlPath;
   return baseUrl.toString();
 };
