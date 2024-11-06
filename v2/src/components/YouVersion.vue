@@ -35,7 +35,7 @@ watchEffect(() => {
 
 <template>
   <template v-if="!configuration.openInBibleAppAuotmatically">
-    <div v-if="loading" class="flex flex-col gap-2 max-w-md mx-auto">
+    <div v-if="loading" class="flex flex-col gap-2 max-w-md mx-auto mb-4" v-for="i in 5" :key="i">
       <span class="flex gap-2">
         <Skeleton class="w-5/12" effect="sheen" />
         <Skeleton class="w-3/12" effect="sheen" />
@@ -67,6 +67,7 @@ watchEffect(() => {
       :src="getBibleAppURL()"
       frameborder="0"
       style="width: 100%; height: 10000px"
+      :class="{ invisible: loading }"
       @load.prevent="loading = false"
     ></iframe>
   </template>

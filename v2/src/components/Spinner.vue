@@ -103,10 +103,6 @@ redraw();
     <div class="jost text-5xl text-center mb-4">
       {{ displayedPassage.book.human }} {{ displayedPassage.chapter }}
     </div>
-    <Button
-      @click.prevent="togglePause"
-      :label="paused ? 'Shuffle' : 'Stop!'"
-      :severity="paused ? 'secondary' : 'primary'"
-    />
+    <Button @click.prevent="togglePause" :label="paused ? 'Shuffle' : 'Stop!'" severity="primary" />
   </div>
 </template>
