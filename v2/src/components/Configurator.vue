@@ -4,6 +4,8 @@ import IftaLabel from 'primevue/iftalabel';
 import RadioButton from 'primevue/radiobutton';
 import Select from 'primevue/select';
 
+import { IconArrowNarrowRight } from '@tabler/icons-vue';
+
 import useConfigStore from '@/stores/configuration';
 import { translations, bookRanges } from '../books';
 
@@ -19,11 +21,12 @@ const configuration = useConfigStore();
         optionLabel="title"
         filter
         inputId="translation"
+        class="w-full"
       />
       <label for="translation">Translation</label>
     </IftaLabel>
 
-    <label class="flex items-center gap-2">
+    <label class="mt-1 flex items-center gap-2">
       <Checkbox v-model="configuration.openInBibleAppAuotmatically" binary />
       Open in Bible App
     </label>
@@ -34,11 +37,11 @@ const configuration = useConfigStore();
 
         <label>
           <RadioButton v-model="configuration.weightBooksEvenly" :value="true" />
-          Randomize each book
+          Random book <IconArrowNarrowRight size="15" class="inline" /> random chapter
         </label>
         <label>
           <RadioButton v-model="configuration.weightBooksEvenly" :value="false" />
-          Randomize all chapters at once
+          Whole Bible <IconArrowNarrowRight size="15" class="inline" /> random chapter
         </label>
       </fieldset>
 

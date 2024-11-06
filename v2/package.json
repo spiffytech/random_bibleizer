@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@tabler/icons-vue": "^3.21.0",
     "autoprefixer": "^10.4.20",
     "pinia": "^2.1.7",
     "postcss": "^8.4.47",
