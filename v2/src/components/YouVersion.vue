@@ -63,7 +63,6 @@ watchEffect(() => {
     </div>
 
     <iframe
-      ref="bible.com"
       :src="getBibleAppURL()"
       frameborder="0"
       style="width: 100%; height: 10000px"

@@ -15,6 +15,7 @@
   "dependencies": {
     "@tabler/icons-vue": "^3.21.0",
     "autoprefixer": "^10.4.20",
+    "fitty": "^2.4.2",
     "pinia": "^2.1.7",
     "postcss": "^8.4.47",
     "primevue": "^4.1.1",

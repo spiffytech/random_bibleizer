@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { Ref } from 'vue';
+import fitty from 'fitty';
 
 import Button from 'primevue/button';
 
@@ -27,6 +28,10 @@ const togglePause = () => {
   } else {
     emit('selectBook', null);
   }
+};
+
+const convertRemToPixels = (rem: number): number => {
+  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 };
 
 /**
@@ -88,9 +93,14 @@ const redraw = () => {
     ...displayedPassage.value,
     ...randomizeFn.value(allBooks.slice(startBook, endBook))
   };
+
+  fitty('#spinner', {
+    minSize: convertRemToPixels(0.5),
+    maxSize: convertRemToPixels(3),
+    multiLine: false
+  });
 };
 
-let lastDrawTime = performance.now();
 // We want to explicitly throttle on time, not frame rate. High-refresh mobile
 // displays still feel caffeinated if we lock on framerate. 180 is an arbitrary
 // magic number that feels right when I see it on screen.
@@ -100,8 +110,12 @@ redraw();
 
 <template>
   <div class="flex flex-col items-center">
-    <div class="jost text-5xl text-center mb-4">
-      {{ displayedPassage.book.human }} {{ displayedPassage.chapter }}
+    <!-- We need the fixed height because when we display long books (Song of
+    Solomon) on narrow screens, fitty shrinks the text, which shrinks the
+    natural height of the container, which makes everything below it move around
+    as the randomizer does its thing. -->
+    <div id="spinner" class="jost text-center text-5xl mb-4 whitespace-nowrap h-12">
+      <span>{{ displayedPassage.book.human }} {{ displayedPassage.chapter }}</span>
     </div>
     <Button @click.prevent="togglePause" :label="paused ? 'Shuffle' : 'Stop!'" severity="primary" />
   </div>
