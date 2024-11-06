@@ -107,6 +107,7 @@ export const books = [
 ];
 
 export const bookRanges: BooksRange[] = [
+  // Theses ranges are zero-indexed, (inclusive,exclusive]
   { name: 'Whole Bible', range: [0, 66] },
   { name: 'Old Testament', range: [0, 39] },
   { name: 'New Testament', range: [39, 66] },

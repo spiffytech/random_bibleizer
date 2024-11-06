@@ -45,7 +45,10 @@ const randomNumberInclIncl = (min: number, max: number) => {
 
 const randomizeByBook = (selectedBooks: Book[]): Pick<Passage, 'book' | 'chapter'> => {
   const bookIndex = randomNumberInclIncl(0, selectedBooks.length - 1);
-  const chapter = randomNumberInclIncl(0, selectedBooks[bookIndex].chapters);
+  const chapter =
+    selectedBooks[bookIndex].chapters > 1
+      ? randomNumberInclIncl(1, selectedBooks[bookIndex].chapters)
+      : 1;
 
   if ((bookIndex === 65 && chapter === 21) || (bookIndex === 0 && chapter === 0)) {
     console.log('selecting', bookIndex, chapter);
