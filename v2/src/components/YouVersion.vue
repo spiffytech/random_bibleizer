@@ -31,6 +31,12 @@ watchEffect(() => {
     window.open(getBibleAppURL(), '_blank');
   }
 });
+
+const onload = () => {
+  loading.value = false;
+  iframe.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+const iframe = ref<HTMLIFrameElement>();
 </script>
 
 <template>
@@ -64,10 +70,11 @@ watchEffect(() => {
 
     <iframe
       :src="getBibleAppURL()"
+      ref="iframe"
       frameborder="0"
       style="width: 100%; height: 10000px"
       :class="{ invisible: loading }"
-      @load.prevent="loading = false"
+      @load.prevent="onload"
     ></iframe>
   </template>
 </template>
