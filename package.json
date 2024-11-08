@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=5174",
-    "build": "run-p type-check \"build-only {@}\" --",
+    "build": "bun run type-check && bun run build-only",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
@@ -35,7 +35,6 @@
     "@vue/tsconfig": "^0.5.1",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.23.0",
-    "npm-run-all2": "^6.2.0",
     "postcss-import": "^16.1.0",
     "prettier": "^3.2.5",
     "tailwindcss": "^3.4.12",
