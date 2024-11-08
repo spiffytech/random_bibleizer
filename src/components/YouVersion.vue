@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect } from "vue";
 
-import Button from 'primevue/button';
-import Skeleton from 'primevue/skeleton';
+import Button from "primevue/button";
+import Skeleton from "primevue/skeleton";
 
-import type { Passage } from '../books';
+import type { Passage } from "../books";
 
-import useConfigStore from '@/stores/configuration';
+import useConfigStore from "@/stores/configuration";
 
 const configuration = useConfigStore();
 
@@ -24,10 +24,10 @@ const loading = ref(true);
 
 const getBibleAppURL = () => {
   const {
-    passage: { book, chapter }
+    passage: { book, chapter },
   } = props;
 
-  const baseUrl = new URL('https://www.bible.com');
+  const baseUrl = new URL("https://www.bible.com");
   const urlPath = `/bible/${configuration.translation.id}/${book.abbr}.${chapter}.${configuration.translation.local_abbreviation.toLowerCase()}`;
   baseUrl.pathname = urlPath;
   return baseUrl.toString();
@@ -35,20 +35,30 @@ const getBibleAppURL = () => {
 
 watchEffect(() => {
   if (props.passage && configuration.openInBibleAppAuotmatically) {
-    window.open(getBibleAppURL(), '_blank');
+    window.open(getBibleAppURL(), "_blank");
   }
 });
 
 const onload = () => {
   loading.value = false;
-  iframe.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // This has to be a microtask, because if it's run immediately, Android
+  // calculates the scroll position based on the not-yet-removed skeleton
+  // elements and we scroll too far.
+  queueMicrotask(() =>
+    iframe.value?.scrollIntoView({ behavior: "smooth", block: "start" })
+  );
 };
 const iframe = ref<HTMLIFrameElement>();
 </script>
 
 <template>
   <template v-if="!configuration.openInBibleAppAuotmatically">
-    <div v-if="loading" class="flex flex-col gap-2 max-w-md mx-auto mb-4" v-for="i in 5" :key="i">
+    <div
+      v-if="loading"
+      class="flex flex-col gap-2 max-w-md mx-auto mb-4"
+      v-for="i in 5"
+      :key="i"
+    >
       <span class="flex gap-2">
         <Skeleton class="w-5/12" effect="sheen" />
         <Skeleton class="w-3/12" effect="sheen" />
