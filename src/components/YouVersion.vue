@@ -40,6 +40,13 @@ watchEffect(() => {
 });
 
 const onload = () => {
+  // Changing the translation will change the iframe URL, which re-kicks the
+  // onload event, which re-scrolls down to the iframe, which the user didn't
+  // ask for. So, only kick onload if we _expected_ to be loading.
+  if (loading.value === false) {
+    return;
+  }
+
   loading.value = false;
   // This has to be a microtask, because if it's run immediately, Android
   // calculates the scroll position based on the not-yet-removed skeleton
