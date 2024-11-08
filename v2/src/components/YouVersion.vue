@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 
+import Button from 'primevue/button';
 import Skeleton from 'primevue/skeleton';
 
 import type { Passage } from '../books';
@@ -11,6 +12,12 @@ const configuration = useConfigStore();
 
 const props = defineProps<{
   passage: Passage;
+  quiz: boolean;
+  quizShowResults: boolean;
+}>();
+
+const emit = defineEmits<{
+  requestResults: [undefined];
 }>();
 
 const loading = ref(true);
@@ -68,6 +75,13 @@ const iframe = ref<HTMLIFrameElement>();
       </span>
     </div>
 
+    <div
+      id="iframe-cover-top"
+      v-if="quiz && !quizShowResults"
+      class="flex flex-col items-center justify-center"
+    >
+      <Button @click="emit('requestResults', undefined)" label="Show Answer" />
+    </div>
     <iframe
       :src="getBibleAppURL()"
       ref="iframe"
@@ -78,3 +92,19 @@ const iframe = ref<HTMLIFrameElement>();
     ></iframe>
   </template>
 </template>
+
+<style>
+#iframe-cover-top,
+#iframe-cover-bottom {
+  position: absolute;
+  background-color: white;
+  width: 100vw;
+}
+#iframe-cover-top {
+  height: 250px;
+}
+#iframe-cover-bottom {
+  bottom: 0;
+  height: 250px;
+}
+</style>

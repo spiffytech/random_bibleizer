@@ -10,10 +10,13 @@ import useConfigStore from '@/stores/configuration';
 import { books as allBooks } from '../books';
 import type { Book, Passage } from '../books';
 
+const props = defineProps<{ quiz: boolean; quizShowResults: boolean }>();
+
 const configuration = useConfigStore();
 
 const emit = defineEmits<{
-  selectBook: [Passage | null];
+  shuffleStart: [undefined];
+  shuffleStop: [Passage];
 }>();
 
 const paused = ref(false);
@@ -24,9 +27,9 @@ const togglePause = () => {
     // Draw one more time so people can't game the results by pausing when they
     // see something they like
     redraw();
-    emit('selectBook', displayedPassage.value);
+    emit('shuffleStop', displayedPassage.value);
   } else {
-    emit('selectBook', null);
+    emit('shuffleStart', undefined);
   }
 };
 
@@ -118,7 +121,8 @@ redraw();
     natural height of the container, which makes everything below it move around
     as the randomizer does its thing. -->
     <div id="spinner" class="jost text-center text-5xl mb-4 whitespace-nowrap h-12">
-      <span>{{ displayedPassage.book.human }} {{ displayedPassage.chapter }}</span>
+      <span v-if="quiz && !quizShowResults && paused">Guess!</span>
+      <span v-else>{{ displayedPassage.book.human }} {{ displayedPassage.chapter }}</span>
     </div>
     <Button @click.prevent="togglePause" :label="paused ? 'Shuffle' : 'Stop!'" severity="primary" />
   </div>

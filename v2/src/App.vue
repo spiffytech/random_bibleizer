@@ -16,5 +16,5 @@ const isRouteMatch = (route: string) => useRoute().name === route;
       </li>
     </ul>
   </nav>
-  <RouterView />
+  <RouterView :key="$route.fullPath" />
 </template>

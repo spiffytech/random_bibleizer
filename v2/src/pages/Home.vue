@@ -8,14 +8,31 @@ import Spinner from '../components/Spinner.vue';
 import Configurator from '@/components/Configurator.vue';
 import YouVersion from '@/components/YouVersion.vue';
 
+const props = defineProps<{ quiz: boolean }>();
+const quizShowResults = ref(false);
+
 const passage = ref(null) as Ref<Passage | null>;
 </script>
 
 <template>
-  <Spinner @select-book="passage = $event" />
+  <Spinner
+    @shuffle-start="
+      passage = null;
+      quizShowResults = false;
+    "
+    @shuffle-stop="passage = $event"
+    :quiz
+    :quizShowResults
+  />
 
   <div class="mx-auto mt-8 md:max-w-md lg:max-w-lg mb-8">
     <Configurator />
   </div>
-  <YouVersion v-if="passage" :passage="passage" />
+  <YouVersion
+    v-if="passage"
+    :passage
+    :quiz
+    :quizShowResults
+    @request-results="quizShowResults = true"
+  />
 </template>
