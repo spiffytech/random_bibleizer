@@ -8,13 +8,15 @@ import Spinner from '../components/Spinner.vue';
 import Configurator from '@/components/Configurator.vue';
 import YouVersion from '@/components/YouVersion.vue';
 
-const props = defineProps<{ quiz: boolean }>();
+defineProps<{ quiz: boolean }>();
 const quizShowResults = ref(false);
 
 const passage = ref(null) as Ref<Passage | null>;
 </script>
 
 <template>
+  <Teleport to="#title-suffix" v-if="quiz">Quiz Mode</Teleport>
+
   <Spinner
     @shuffle-start="
       passage = null;
