@@ -13,6 +13,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@honeybadger-io/js": "^6.10.1",
+    "@honeybadger-io/vue": "^6.1.26",
     "@tabler/icons-vue": "^3.21.0",
     "autoprefixer": "^10.4.20",
     "fitty": "^2.4.2",
