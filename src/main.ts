@@ -20,6 +20,16 @@ if (import.meta.env.VITE_honeybadgerKey) {
     apiKey: import.meta.env.VITE_honeybadgerKey,
     environment: "production",
   };
+  Honeybadger.beforeNotify(function (notice) {
+    if (notice?.url) {
+      // We're trying to suppress errors from inside the Bible.com iframe. I
+      // can't do anything about them, and they're very noisy.
+      const host = new URL(notice.url).hostname;
+      if (host !== "randombibleizer.spiffy.tech") {
+        return false;
+      }
+    }
+  });
   app.use(HoneybadgerVue, config);
 }
 
