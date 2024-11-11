@@ -17,6 +17,7 @@
     "@honeybadger-io/vue": "^6.1.26",
     "@tabler/icons-vue": "^3.21.0",
     "autoprefixer": "^10.4.20",
+    "fastq": "^1.17.1",
     "fitty": "^2.4.2",
     "pinia": "^2.1.7",
     "postcss": "^8.4.47",

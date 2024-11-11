@@ -69,7 +69,10 @@ export default defineStore("configuration", () => {
   const translation = ref(
     translations.find(
       (t) => t.local_abbreviation === savedTranslationAbbr.value
-    )!
+    ) ??
+      // Fallthrough case covers while we figure out multi-language support, and
+      // the downloaded translations file may not include the translation they saved
+      translations.find((t) => t.local_abbreviation === "GW")!
   );
   watchEffect(
     () => (savedTranslationAbbr.value = translation.value.local_abbreviation)
