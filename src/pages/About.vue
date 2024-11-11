@@ -1,8 +1,17 @@
 <script setup lang="ts">
-import { IconBrandGithub, IconMail, IconPigMoney } from '@tabler/icons-vue';
+import {
+  IconBrandGithub,
+  IconMail,
+  IconPigMoney,
+  IconUser,
+} from "@tabler/icons-vue";
 </script>
 
 <template>
+  <p class="align-middle mb-4 text-xl border-b-4 border-dotted w-max">
+    <IconUser class="inline" /> Built by spiffytech a.k.a. Brian
+  </p>
+
   <p class="align-middle mb-4">
     <IconMail class="inline" />
     If you like this app, or have a suggestion, feel free to
@@ -16,7 +25,8 @@ import { IconBrandGithub, IconMail, IconPigMoney } from '@tabler/icons-vue';
 
   <p class="align-middle mb-4">
     <IconPigMoney class="inline" />
-    Some people have asked if they can donate to me. If you wish, you can do so with
+    Some people have asked if they can donate to me. If you wish, you can do so
+    with
     <!-- inline-block prevents hanging whitespace, because HTML is dumb about
    line breaks -->
     <a
@@ -39,7 +49,10 @@ import { IconBrandGithub, IconMail, IconPigMoney } from '@tabler/icons-vue';
   <p class="align-middle">
     <IconBrandGithub class="inline" />
     You can find the source code for this project
-    <a href="https://github.com/spiffytech/random_bibleizer" class="underline text-blue-500">
+    <a
+      href="https://github.com/spiffytech/random_bibleizer"
+      class="underline text-blue-500"
+    >
       on Github.
     </a>
   </p>
