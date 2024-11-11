@@ -1,16 +1,16 @@
-import { ref, computed, watchEffect } from 'vue';
-import { defineStore } from 'pinia';
+import { ref, computed, watchEffect } from "vue";
+import { defineStore } from "pinia";
 
-import type { Ref } from 'vue';
+import type { Ref } from "vue";
 
-import { translations, bookRanges } from '../books';
+import { translations, bookRanges } from "../books";
 
-import type { BooksRange } from '../books';
+import type { BooksRange } from "../books";
 
 // Mobile Safari disables LocalStorage when "block all cookies" is enabled
 const canUseLocalstorage = (() => {
   try {
-    localStorage.getItem('bogus');
+    localStorage.getItem("bogus");
     return true;
   } catch (ex) {
     return false;
@@ -34,7 +34,10 @@ const localstorageTryDelete = (key: string) => {
   }
 };
 
-const persistentLocalStorageValue = <T>(key: string, defaultValue: T): Ref<T> => {
+const persistentLocalStorageValue = <T>(
+  key: string,
+  defaultValue: T
+): Ref<T> => {
   const storedValue = localstorageTryGet(key);
   // No idea why the cast is necessary
   const valueRef = ref(defaultValue) as Ref<T>;
@@ -51,25 +54,36 @@ const persistentLocalStorageValue = <T>(key: string, defaultValue: T): Ref<T> =>
   return valueRef;
 };
 
-export default defineStore('configuration', () => {
-  const weightBooksEvenly = ref(persistentLocalStorageValue('weightBooksEvenly', true));
+export default defineStore("configuration", () => {
+  const weightBooksEvenly = ref(
+    persistentLocalStorageValue("weightBooksEvenly", true)
+  );
 
   // This is an incredibly clumsy way to handle persisting this value, but I
   // don't know what else to do and I don't care enough to make it better.
   // Doesn't matter.
-  const savedTranslationAbbr = persistentLocalStorageValue('savedTranslation', 'GW');
-  const translation = ref(translations.find((t) => t.abbreviation === savedTranslationAbbr.value)!);
-  watchEffect(() => (savedTranslationAbbr.value = translation.value.abbreviation));
+  const savedTranslationAbbr = persistentLocalStorageValue(
+    "savedTranslation",
+    "GW"
+  );
+  const translation = ref(
+    translations.find(
+      (t) => t.local_abbreviation === savedTranslationAbbr.value
+    )!
+  );
+  watchEffect(
+    () => (savedTranslationAbbr.value = translation.value.local_abbreviation)
+  );
 
   const openInBibleAppAutomatically = persistentLocalStorageValue(
-    'openInBibleAppAutomatically',
+    "openInBibleAppAutomatically",
     false
   );
   // Ughhhh we put a typo in prod and now we have to support it
-  const typoedValue = localstorageTryGet('openInBibleAppAuotmatically');
+  const typoedValue = localstorageTryGet("openInBibleAppAuotmatically");
   if (typoedValue) {
-    openInBibleAppAutomatically.value = typoedValue === 'true';
-    localstorageTryDelete('openInBibleAppAuotmatically');
+    openInBibleAppAutomatically.value = typoedValue === "true";
+    localstorageTryDelete("openInBibleAppAuotmatically");
   }
 
   const selectedBookRange = ref(bookRanges[0]) as Ref<BooksRange>;
@@ -78,6 +92,6 @@ export default defineStore('configuration', () => {
     weightBooksEvenly,
     translation,
     openInBibleAppAuotmatically: openInBibleAppAutomatically,
-    selectedBookRange
+    selectedBookRange,
   };
 });
