@@ -117,6 +117,7 @@ export const bookRanges: BooksRange[] = [
   { name: "Old Testament", range: [0, 39] },
   { name: "New Testament", range: [39, 66] },
   { name: "Psalms and Proverbs", range: [18, 20] },
+  { name: "Gospels", range: [39, 43] },
 ];
 
 export type Book = (typeof books)[number];
